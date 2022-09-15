@@ -28,9 +28,9 @@ public class Clinic {
 
         BufferedReader readFile;
         //"patients.txt"
-        readFile = new BufferedReader(new FileReader(txtFile.getName())); //Read file in theory
+        readFile = new BufferedReader(new FileReader("patients.txt")); //Read file in theory
         String line = "";
-        while(line != null /*|| currentTime > "06:00"*/){
+        /*while(line != null /*|| currentTime > "06:00"){
             line = readFile.readLine();
             String[] currentPatient = line.Split("  ", 6);
             //Patient[]
@@ -38,8 +38,8 @@ public class Clinic {
             /*if(currentPatient[5] <= currentTime){
                 Patient newPatient = New Patient();
 
-            }*/
-        }
+            }
+        }*/
         //System.out.print(line);
         //readFile.close();
 
