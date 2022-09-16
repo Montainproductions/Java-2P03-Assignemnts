@@ -2,39 +2,18 @@ import java.io.*;
 
 public class Clinic {
     public static void RunClinic(){
-        //Timer();
+        InternalTimer timer = new InternalTimer();
+        //timer.StartDay();
         ReadData();
     }
 
-    public static void Timer(){
-        int hour = 9;
-        int minutes = 0;
-        for(int i = 0; i <= 479; i++){
-            if(minutes == 59){
-                minutes = 0;
-                hour++;
-            }else{
-                minutes++;
-            }
-            System.out.println(String.valueOf(hour) + ":" + String.valueOf(minutes));
-        }
-    }
-
-    public static boolean VaccineTimer(){
-        int vaccineTime = 0;
-        for(int i = 0; i < 15; i++){
-            vaccineTime++;
-        }
-        return true;
-    }
-
     public static void ReadData(){
-        File txtFile = new File("C:\\Users\\monta\\Documents\\GitHub\\Java-2P03-Assignemnts\\Cosc2P03_A1_Joaquin_DeLosada_6778757\\src\\patients.txt");
-        System.out.println(txtFile);
+        File txtFile = new File("recourse//patients.txt");
+        System.out.println(txtFile.exists());
 
         BufferedReader readFile;
         //"patients.txt"
-        readFile = new BufferedReader(new FileReader("patients.txt")); //Read file in theory
+        //readFile = new BufferedReader(new FileReader("recourses//patients.txt")); //Read file in theory
         String line = "";
         /*while(line != null /*|| currentTime > "06:00"){
             line = readFile.readLine();
