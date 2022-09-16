@@ -7,19 +7,25 @@ public class Clinic {
     }
 
     public static void Timer(){
-        int currentTime = 900;
-        for(int i = 0; i <= 960; i++){
-            if(i%2 == 0){
-                currentTime++;
+        int hour = 9;
+        int minutes = 0;
+        for(int i = 0; i <= 479; i++){
+            if(minutes == 59){
+                minutes = 0;
+                hour++;
+            }else{
+                minutes++;
             }
-            System.out.println(currentTime);
+            System.out.println(String.valueOf(hour) + ":" + String.valueOf(minutes));
         }
+    }
 
-        int vaccineTimer = 0;
-        for(int i = 0; i <= 15; i++){
-            vaccineTimer++;
-            System.out.println(vaccineTimer);
+    public static boolean VaccineTimer(){
+        int vaccineTime = 0;
+        for(int i = 0; i < 15; i++){
+            vaccineTime++;
         }
+        return true;
     }
 
     public static void ReadData(){
