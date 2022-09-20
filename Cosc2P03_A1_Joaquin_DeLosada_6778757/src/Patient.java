@@ -1,4 +1,4 @@
-public abstract class Patient {
+public class Patient {
 
     String patientName;
     int patientAge;
