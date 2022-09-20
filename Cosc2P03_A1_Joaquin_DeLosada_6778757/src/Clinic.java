@@ -16,12 +16,14 @@ public class Clinic {
             //System.out.println(readFile);
             while(line != null /*|| currentTime > "06:00"*/){
                 line = readFile.readLine();
+                if(line == null){break;}
+                //System.out.println(line);
                 String[] currentPatient = line.split("  ");
                 //Patient[]
-                System.out.print(currentPatient);
+                System.out.println(currentPatient);
             }
         } catch(FileNotFoundException e){
-            System.out.println("File not found. Did you try to move it? Not a good idea return it.");
+            System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
