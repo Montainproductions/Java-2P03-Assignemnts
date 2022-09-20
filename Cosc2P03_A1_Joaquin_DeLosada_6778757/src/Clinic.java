@@ -1,4 +1,6 @@
+import javax.lang.model.element.Name;
 import java.io.*;
+import java.util.ArrayList;
 
 public class Clinic {
     public static void RunClinic(){
@@ -13,15 +15,24 @@ public class Clinic {
         try {
             readFile = new BufferedReader(new FileReader(txtFile)); //Read file in theory
             String line = "";
+            ArrayList<String> patientList = new ArrayList<>();
             //System.out.println(readFile);
             while(line != null /*|| currentTime > "06:00"*/){
                 line = readFile.readLine();
                 if(line == null){break;}
-                //System.out.println(line);
-                String[] currentPatient = line.split("  ");
-                //Patient[]
-                System.out.println(currentPatient);
+                if(line.contains("Name")){}
+                else{
+                    patientList.add(line);
+                }
             }
+            patientList.forEach((i) ->{
+                String[] currentPatient = i.split(" ");
+                Patient newPatient = new Patient();
+                newPatient.setPatientName(currentPatient[0]);
+                newPatient.setPatientAge(Integer.valueOf(currentPatient[2]));
+                newPatient.setPatientOccupation(currentPatient[3]);
+                System.out.println(newPatient);
+            });
         } catch(FileNotFoundException e){
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         } catch (IOException e) {
