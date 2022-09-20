@@ -1,12 +1,13 @@
 public class WaitQueue {
-    /*
     Patient currentPatient;
     int patientScore;
 
+    /*
     s = 1 //Arraysize
     int[] currentValues = new int[s]
 
-    public void Insert(Patient newPatient){
+
+    public void insert(Patient newPatient){
         currentPatient = newPatient;
         if(s == 1){
             Node.AddNode(newPatient);
@@ -21,26 +22,25 @@ public class WaitQueue {
             }
         }
     }
+    */
 
     public void removeMax(){
     }
 
-    public WaitQueue ReturnCurrentQueue(){
-        return WaitQueue;
+    public void getPatient(Patient newPatient){
+        currentPatient = newPatient;
     }
 
     public void CalcPos(){
         patientScore = 0;
-        if(currentPatient.getAge >= 60){
+        if(currentPatient.getPatientAge >= 60){
             patientScore++;
         }
-        if(currentPatient.getOccupation == "Teacher" || currentPatient.getOccupation == "Nurse" || currentPatient.getOccupation == "Care Giver"){
+        if(currentPatient.getPatientOccupation == "Teacher" || currentPatient.getPatientOccupation == "Nurse" || currentPatient.getPatientOccupation == "Care Giver"){
             patientScore++;
         }
-        if(currentPatient.getHealthCondition == "Pregnancy" || currentPatient.getHealthCondition == "Cancer" || currentPatient.getHealthCondition == "Diabetes" || currentPatient.getHealthCondition == "Asthma" || currentPatient.getHealthCondition == "Primary Immune Deficiency" || currentPatient.getHealthCondition == "Cardiovascular Disease"){
+        if(currentPatient.getPatientCondition == "Pregnancy" || currentPatient.getPatientCondition == "Cancer" || currentPatient.getPatientCondition == "Diabetes" || currentPatient.getPatientCondition == "Asthma" || currentPatient.getPatientCondition == "Primary Immune Deficiency" || currentPatient.getPatientCondition == "Cardiovascular Disease"){
             patientScore++;
         }
     }
-
-     */
 }

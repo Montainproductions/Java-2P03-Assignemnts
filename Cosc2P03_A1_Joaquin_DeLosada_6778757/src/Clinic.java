@@ -6,8 +6,6 @@ import java.util.Arrays;
 public class Clinic {
     public static void RunClinic(){
         ReadData();
-        InternalTimer timer = new InternalTimer();
-        timer.StartDay();
     }
 
     public static void ReadData(){
@@ -16,6 +14,7 @@ public class Clinic {
         int totalArrayLength = 0;
         try {
             readFile = new BufferedReader(new FileReader(txtFile)); //Read file in theory
+
             String line = "";
             ArrayList<String> patientList = new ArrayList<>();
             //System.out.println(readFile);
@@ -41,30 +40,13 @@ public class Clinic {
                 //System.out.println("Current patient: " + newPatient.getPatientName());
                 //System.out.println("Patient Array: " + patients);
             });
+            InternalTimer timer = new InternalTimer();
+            timer.StartDay();
         } catch(FileNotFoundException e){
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //System.out.print(line);
-        //readFile.close();
-
-        //Sudo code
-        /*for(string array[] line in file){
-            if(line == null){return;}
-            else if line[0]{return;}
-            else{
-                Patient newPatient = NewPatient(line);
-                if(newPatient.TimeArrival() < Timer.CurrentTime()){
-                    return;
-                }else{
-                    currentWaitQueue.AddToQueue(newPatient);
-                    system.out.println(currentWaitQueue.ReturnCurrentQueue());
-                }
-            }
-        }
-
-        */
     }
 
     public static void main(String[] args) {
