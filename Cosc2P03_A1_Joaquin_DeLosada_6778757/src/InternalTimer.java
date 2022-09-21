@@ -1,11 +1,11 @@
 public class InternalTimer {
-    int hour;
+    int hour; //Current
     int minutes;
 
-    public void StartDay(){
-        hour = 9;
-        minutes = 0;
-        Timer();
+    public void StartDay(){ //Starting the day and setting up start time of work
+        hour = 9; //Starting the hour at 9 am
+        minutes = 0; //Starting the minutes
+        Timer(); //Actually runs the clock of the world
     }
 
     public void Timer(){
@@ -16,7 +16,7 @@ public class InternalTimer {
             }else{
                 minutes++;
             }
-            //System.out.println(CurrentTime());
+            System.out.println(CurrentTime());
         }
     }
 
@@ -29,7 +29,21 @@ public class InternalTimer {
     }
 
     public String CurrentTime(){
-        String currentTime = String.valueOf(hour) + ":" + String.valueOf(minutes);
+        String currentHour = String.valueOf(hour);
+        String currentMinute;
+        if(minutes < 10){
+            currentMinute = "0" + String.valueOf(minutes);
+        }else{
+            currentMinute = String.valueOf(minutes);
+        }
+        String currentTime = currentHour + ":" + currentMinute;
         return currentTime;
     }
+
+    /*public int CompareTime(String patientTime){
+        int timeDiff;
+
+
+        return timeDiff;
+    }*/
 }

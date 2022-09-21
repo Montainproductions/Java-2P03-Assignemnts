@@ -31,7 +31,7 @@ public class WaitQueue {
         currentPatient = newPatient;
     }
 
-    public void CalcPos(){
+    /*public void CalcPos(){
         patientScore = 0;
         if(currentPatient.getPatientAge >= 60){
             patientScore++;
@@ -42,5 +42,5 @@ public class WaitQueue {
         if(currentPatient.getPatientCondition == "Pregnancy" || currentPatient.getPatientCondition == "Cancer" || currentPatient.getPatientCondition == "Diabetes" || currentPatient.getPatientCondition == "Asthma" || currentPatient.getPatientCondition == "Primary Immune Deficiency" || currentPatient.getPatientCondition == "Cardiovascular Disease"){
             patientScore++;
         }
-    }
+    }*/
 }
