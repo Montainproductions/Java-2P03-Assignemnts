@@ -40,10 +40,13 @@ public class InternalTimer {
         return currentTime;
     }
 
-    /*public int CompareTime(String patientTime){
-        int timeDiff;
+    public int CompareTime(String patientTime){
+        int timeDiff = 0;
+        String[] patientTimeSplit = patientTime.split(":");
+        //if()
+
 
 
         return timeDiff;
-    }*/
+    }
 }
