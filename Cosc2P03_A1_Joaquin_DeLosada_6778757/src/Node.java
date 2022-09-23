@@ -1,10 +1,23 @@
 public class Node {
-    public int item; //Current Position
-    public Node nextNode; //Next node
     public Node previousNode; //Previous node
-    public Node (Node p, int i, Node n){
-        previousNode = p;
-        item = i;
-        nextNode = n;
+    public int count; //Current Position
+    public Node nextNode; //Next node
+    public Node(){
+        previousNode = null;
+        count = 0;
+        nextNode = null;
+    }
+    public Node(Node newP, int newI, Node newN){
+        previousNode = newP;
+        count = newI;
+        nextNode = newN;
+    }
+
+    public Node getNextNode() {
+        return nextNode;
+    }
+
+    public Node getPreviousNode() {
+        return previousNode;
     }
 }

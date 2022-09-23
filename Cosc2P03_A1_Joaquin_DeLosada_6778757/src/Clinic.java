@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Clinic {
+    public static InternalTimer timer = new InternalTimer(); //Set the timer
+    public static WaitQueue wq = new WaitQueue();
+    public static Patient[] patients;
+    public static int currPatientToEnter = 0;
+
     public static void RunClinic(){
         ReadData();
+        Monitor();
     }
 
     public static void ReadData(){
@@ -27,7 +33,7 @@ public class Clinic {
                     patientList.add(line);
                 }
             }
-            Patient[] patients = new Patient[totalArrayLength]; //Create the array of ADT of patients of the size of patients
+            patients = new Patient[totalArrayLength]; //Create the array of ADT of patients of the size of patients
             patientList.forEach((i) ->{ //Go through each arraylist of patient string to  split the string up and add it to a patient data type
                 String[] currentPatient = i.split("\\t"); //Spliting the string into an array
                 Patient newPatient = new Patient(); //Create a patient data type
@@ -40,12 +46,26 @@ public class Clinic {
                 //System.out.println("Current patient: " + newPatient.getPatientName());
                 //System.out.println("Patient Array: " + patients);
             });
-            InternalTimer timer = new InternalTimer(); //Set the timer
-            timer.StartDay(); //Start the day and 9 am
         } catch(FileNotFoundException e){ //If the file isnt found then print this
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         } catch (IOException e) { //If the reader cant find a line through this exception
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void Monitor(){
+        timer.StartDay(); //Start the day and 9 am
+        for(int i = 0; i <= 429; i++) {
+            timer.TimerIncrease();
+            int timeDiff = timer.CompareTime(patients[currPatientToEnter].getPatientTimeOfArrival());
+            //System.out.println("Time diffrence: " + timeDiff);
+            if (timeDiff == 0) {
+                wq.getPatient(patients[currPatientToEnter]);
+                if(currPatientToEnter < patients.length){
+                    currPatientToEnter++;
+                }
+                //System.out.println("Current pos in array: " + currPatientToEnter);
+            }
         }
     }
 

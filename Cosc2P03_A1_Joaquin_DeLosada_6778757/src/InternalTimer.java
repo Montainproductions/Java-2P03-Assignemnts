@@ -5,19 +5,16 @@ public class InternalTimer {
     public void StartDay(){ //Starting the day and setting up start time of work
         hour = 9; //Starting the hour at 9 am
         minutes = 0; //Starting the minutes
-        Timer(); //Actually runs the clock of the world
     }
 
-    public void Timer(){
-        for(int i = 0; i <= 479; i++){
-            if(minutes == 59){
-                minutes = 0;
-                hour++;
-            }else{
-                minutes++;
-            }
-            System.out.println(CurrentTime());
+    public void TimerIncrease(){
+        if(minutes == 59){
+            minutes = 0;
+            hour++;
+        }else{
+            minutes++;
         }
+        System.out.println(CurrentTime());
     }
 
     public boolean VaccineTimer(){
@@ -43,9 +40,13 @@ public class InternalTimer {
     public int CompareTime(String patientTime){
         int timeDiff = 0;
         String[] patientTimeSplit = patientTime.split(":");
-        //if()
-
-
+        int patientHour = Integer.valueOf(patientTimeSplit[0]);
+        int patientMinute = Integer.valueOf(patientTimeSplit[1]);
+        if(patientHour >= hour && patientMinute > minutes) {
+            timeDiff = 1;
+        } else if ((patientHour <= hour && patientMinute < minutes)) {
+            timeDiff = -1;
+        }
 
         return timeDiff;
     }
