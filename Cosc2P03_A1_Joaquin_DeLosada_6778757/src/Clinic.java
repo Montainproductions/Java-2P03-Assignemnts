@@ -55,13 +55,13 @@ public class Clinic {
 
     public static void Monitor(){
         timer.StartDay(); //Start the day and 9 am
-        for(int i = 0; i <= 429; i++) {
+        for(int i = 0; i <= 479; i++) {
             timer.TimerIncrease();
             int timeDiff = timer.CompareTime(patients[currPatientToEnter].getPatientTimeOfArrival());
             //System.out.println("Time diffrence: " + timeDiff);
             if (timeDiff == 0) {
                 wq.getPatient(patients[currPatientToEnter]);
-                if(currPatientToEnter < patients.length){
+                if(currPatientToEnter < patients.length && currPatientToEnter != 14){
                     currPatientToEnter++;
                 }
                 //System.out.println("Current pos in array: " + currPatientToEnter);

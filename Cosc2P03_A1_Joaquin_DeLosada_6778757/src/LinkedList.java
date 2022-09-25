@@ -1,11 +1,13 @@
 public class LinkedList {
     private Node head;
+    private Node previouseHead;
     public LinkedList(){
         head = null;
+        previouseHead = null;
     }
 
     public void AddtoStart(Patient newPatient, int count){
-        head = new Node(newPatient,null, count, head);
+        head = new Node(newPatient, head);
     }
 
     public boolean DeleteHeadNode(){
@@ -15,6 +17,10 @@ public class LinkedList {
         }else{
             return false;
         }
+    }
+
+    public void InsertNodeInMiddle(){
+
     }
 
     public int Size(){
@@ -29,6 +35,10 @@ public class LinkedList {
 
     public boolean Contains(Patient patient){
         return (Find(patient) != null);
+    }
+
+    public Patient FindsPatient(Patient target){
+        return Find(target).GetCurrentPatient();
     }
 
     private Node Find(Patient target){
@@ -47,9 +57,15 @@ public class LinkedList {
     public void OutputList(){
         Node position = head;
         while(position != null){
-            System.out.println(position.GetCurrentPatient() + " " + position.GetCount());
+            System.out.println(position.GetCurrentPatient().getPatientName());
 
             position.GetNextNode();
         }
     }
+
+    public boolean isEmpty(){
+        return (head == null);
+    }
+
+//    public boolean Equals(Patient otherPatient){}
 }

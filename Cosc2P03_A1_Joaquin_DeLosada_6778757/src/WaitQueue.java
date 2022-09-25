@@ -2,12 +2,14 @@ public class WaitQueue {
     Patient currentPatient;
     int patientScore;
 
+    LinkedList list = new LinkedList();
 
-
-    /*public void insert(Patient newPatient){
+    public void insert(Patient newPatient){
         currentPatient = newPatient;
-        if(s == 1){
-            Node.AddNode(newPatient);
+        list.AddtoStart(newPatient,patientScore);
+        int s = list.Size();
+        /*if(s == 1){
+            list.AddtoStart(newPatient,patientScore);
         }else{
             CalcPos(currentPatient);
             for(currentValues){
@@ -17,16 +19,21 @@ public class WaitQueue {
                     NewResizedArray(patientScore, Pos);
                 }
             }
-        }
-    }*/
+        }*/
+        System.out.println(currentPatient.getPatientName());
+        //list.OutputList();
+    }
 
     public void removeMax(){
     }
 
     public void getPatient(Patient newPatient){
         currentPatient = newPatient;
-        System.out.println(currentPatient.getPatientName());
-        System.out.println(patientScore);
+        CalcPos(currentPatient);
+        insert(currentPatient);
+
+        //System.out.println(currentPatient.getPatientName());
+        //System.out.println(patientScore);
     }
 
     public void CalcPos(Patient newPatient){

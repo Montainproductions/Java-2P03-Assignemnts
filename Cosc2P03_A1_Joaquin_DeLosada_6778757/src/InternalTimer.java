@@ -14,7 +14,7 @@ public class InternalTimer {
         }else{
             minutes++;
         }
-        System.out.println(CurrentTime());
+        //System.out.println(CurrentTime());
     }
 
     public boolean VaccineTimer(){

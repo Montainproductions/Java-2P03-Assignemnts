@@ -1,30 +1,23 @@
 public class Node {
     public Patient currentPatient;
     public Node previousNode; //Previous node
-    public int count; //Current Position
     public Node nextNode; //Next node
     public Node(){
         currentPatient = null;
         previousNode = null;
-        count = 0;
         nextNode = null;
     }
-    public Node(Patient newPatient, Node newP, int newCount, Node newN){
+    public Node(Patient newPatient, Node nextPatient){
         currentPatient = newPatient;
-        previousNode = newP;
-        count = newCount;
-        nextNode = newN;
+        previousNode = null;
+        nextNode = nextPatient;
     }
 
     public Patient GetCurrentPatient(){return currentPatient;}
 
-    public Node GetNextNode() {
-        return nextNode;
-    }
+    public Node GetNextNode() {return nextNode;}
 
-    public Node getPreviousNode() {
+    public Node GetPreviousNode() {
         return previousNode;
     }
-
-    public int GetCount(){return count;}
 }
