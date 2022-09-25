@@ -1,7 +1,6 @@
 import java.util.NoSuchElementException;
 
 public class LinkedList {
-    private Node head;
     public class ListIterator{
         public Node position;
         public Node previous;
@@ -19,20 +18,24 @@ public class LinkedList {
         public void MovetoCorrectPosition(Patient newPatient){
             Patient currentPatient = position.GetCurrentPatient();
             if(currentPatient.getPriorityQueue() == newPatient.getPriorityQueue()){
-                if(currentPatient.getPatientTimeOfArrival() != newPatient.getPatientTimeOfArrival()){}
+                int timeDiff = CompareTime()
+                if(currentPatient.getPatientTimeOfArrival() > newPatient.getPatientTimeOfArrival()){
+                    AddNodeHere(currentPatient);
+                }else{
+                    Next();
+                }
             }else{
-                currentPatient = Next();
+                Next();
             }
         }
 
-        public Patient Next(){
+        public void Next(){
             if(!HasNext()){
                 throw new NoSuchElementException();
             }
             Patient returnPatient = position.GetCurrentPatient();
             previous = position;
             position = position.GetNextNode();
-            return returnPatient;
         }
 
         public boolean HasNext(){
@@ -40,7 +43,7 @@ public class LinkedList {
         }
 
         public void AddNodeHere(Patient newPatient){
-            Node temp = new Node(newPatient,position);
+            Node temp = new Node(newPatient, previous, position);
             previous.SetLink(temp);
         }
 
@@ -50,12 +53,20 @@ public class LinkedList {
         }
     }
 
+    private Node head;
+
+    public ListIterator iterator(){
+        return new ListIterator();
+    }
+
     public LinkedList(){
         head = null;
     }
 
     public void AddtoStart(Patient newPatient, int count){
-        head = new Node(newPatient, head);
+        Node newHead = new Node(newPatient, null, head);
+        head.previousNode = newHead;
+        head = newHead;
     }
 
     public boolean DeleteHeadNode(){
