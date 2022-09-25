@@ -1,8 +1,53 @@
+import java.util.NoSuchElementException;
+
 public class LinkedList {
     private Node head;
     public class ListIterator{
         public Node position;
-        public Node previous
+        public Node previous;
+
+        public ListIterator(){
+            position = head;
+            previous = null;
+        }
+
+        public void Restart(){
+            position = head;
+            previous = null;
+        }
+
+        public void MovetoCorrectPosition(Patient newPatient){
+            Patient currentPatient = position.GetCurrentPatient();
+            if(currentPatient.getPriorityQueue() == newPatient.getPriorityQueue()){
+                if(currentPatient.getPatientTimeOfArrival() != newPatient.getPatientTimeOfArrival()){}
+            }else{
+                currentPatient = Next();
+            }
+        }
+
+        public Patient Next(){
+            if(!HasNext()){
+                throw new NoSuchElementException();
+            }
+            Patient returnPatient = position.GetCurrentPatient();
+            previous = position;
+            position = position.GetNextNode();
+            return returnPatient;
+        }
+
+        public boolean HasNext(){
+            return (position != null);
+        }
+
+        public void AddNodeHere(Patient newPatient){
+            Node temp = new Node(newPatient,position);
+            previous.SetLink(temp);
+        }
+
+        public void DeleteNodeHere(){
+            previous.SetLink(position.GetNextNode());
+            position.SetLink(position.GetNextNode());
+        }
     }
 
     public LinkedList(){
@@ -22,10 +67,6 @@ public class LinkedList {
         }
     }
 
-    public void InsertNodeInMiddle(){
-
-    }
-
     public int Size(){
         int count = 0;
         Node position = head;
@@ -35,6 +76,8 @@ public class LinkedList {
         }
         return count;
     }
+
+    /* This is shown in the book as usefull but as I work on the
 
     public boolean Contains(Patient patient){
         return (Find(patient) != null);
@@ -55,7 +98,7 @@ public class LinkedList {
             position = position.GetNextNode();
         }
         return null;
-    }
+    }*/
 
     public void OutputList(){
         Node position = head;
