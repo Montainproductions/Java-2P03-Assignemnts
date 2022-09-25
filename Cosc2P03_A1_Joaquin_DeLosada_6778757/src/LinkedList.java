@@ -1,9 +1,12 @@
 public class LinkedList {
     private Node head;
-    private Node previouseHead;
+    public class ListIterator{
+        public Node position;
+        public Node previous
+    }
+
     public LinkedList(){
         head = null;
-        previouseHead = null;
     }
 
     public void AddtoStart(Patient newPatient, int count){
@@ -59,7 +62,7 @@ public class LinkedList {
         while(position != null){
             System.out.println(position.GetCurrentPatient().getPatientName());
 
-            position.GetNextNode();
+            position = position.GetNextNode();
         }
     }
 

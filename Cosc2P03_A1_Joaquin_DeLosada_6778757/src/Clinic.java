@@ -2,6 +2,7 @@ import javax.lang.model.element.Name;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 
 public class Clinic {
     public static InternalTimer timer = new InternalTimer(); //Set the timer
@@ -61,12 +62,15 @@ public class Clinic {
             //System.out.println("Time diffrence: " + timeDiff);
             if (timeDiff == 0) {
                 wq.getPatient(patients[currPatientToEnter]);
-                if(currPatientToEnter < patients.length && currPatientToEnter != 14){
+                if(!((currPatientToEnter + 1) == patients.length)){
                     currPatientToEnter++;
                 }
                 //System.out.println("Current pos in array: " + currPatientToEnter);
+            }else if(timeDiff == -1){
+                break;
             }
         }
+        //wq.printList();
     }
 
     public static void main(String[] args) {

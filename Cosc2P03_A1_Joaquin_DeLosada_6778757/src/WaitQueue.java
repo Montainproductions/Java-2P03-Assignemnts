@@ -6,22 +6,18 @@ public class WaitQueue {
 
     public void insert(Patient newPatient){
         currentPatient = newPatient;
-        list.AddtoStart(newPatient,patientScore);
         int s = list.Size();
-        /*if(s == 1){
+        System.out.println(s);
+        if(s == 0){
             list.AddtoStart(newPatient,patientScore);
         }else{
-            CalcPos(currentPatient);
-            for(currentValues){
-                if(repeating){
-                    FindTimeDiff;
-                    Node.AddNode(newPatient);
-                    NewResizedArray(patientScore, Pos);
-                }
-            }
-        }*/
-        System.out.println(currentPatient.getPatientName());
-        //list.OutputList();
+
+        }
+        //System.out.println(currentPatient.getPatientName());
+    }
+
+    public void printList(){
+        list.OutputList();
     }
 
     public void removeMax(){
@@ -30,6 +26,7 @@ public class WaitQueue {
     public void getPatient(Patient newPatient){
         currentPatient = newPatient;
         CalcPos(currentPatient);
+        currentPatient.setPriorityQueue(patientScore);
         insert(currentPatient);
 
         //System.out.println(currentPatient.getPatientName());
