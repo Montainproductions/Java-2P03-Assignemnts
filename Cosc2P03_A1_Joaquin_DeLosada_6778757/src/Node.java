@@ -9,7 +9,7 @@ public class Node {
     }
     public Node(Patient newPatient, Node previousNode, Node nextPatient){
         currentPatient = newPatient;
-        previousNode = null;
+        this.previousNode = previousNode;
         nextNode = nextPatient;
 
         //System.out.println(newPatient.getPatientName());
@@ -17,6 +17,10 @@ public class Node {
 
     public void SetLink(Node newNode){
         nextNode = newNode;
+    }
+
+    public void SetPreviouseLink(Node previousNode){
+        this.previousNode = previousNode;
     }
 
     public Patient GetCurrentPatient(){return currentPatient;}

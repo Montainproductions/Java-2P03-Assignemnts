@@ -6,26 +6,36 @@ public class WaitQueue {
     LinkedList.ListIterator listIterator = list.iterator();
 
     public void insert(Patient newPatient){
-        currentPatient = newPatient;
         int s = list.Size();
         System.out.println(s);
+        listIterator.Restart();
+        Patient currentPatient;
+        int currentPatientPos;
+        int newPatientPos = newPatient.getPriorityQueue();
+
         if(s == 0){
-            list.AddtoStart(newPatient,patientScore);
-        }else{
-            Patient currentPatient = listIterator.position.GetCurrentPatient();
-            if(currentPatient.getPriorityQueue() == newPatient.getPriorityQueue()){
-                int timeDiff = CompareTimer(currentPatient.getPatientTimeOfArrival(), newPatient.getPatientTimeOfArrival());
-                if(timeDiff == -1){
-                    listIterator.AddNodeHere(currentPatient);
-                }else{
-                    listIterator.Next();
-                }
+            list.FirstLink(newPatient);
+            return;
+        }
+
+        currentPatient = listIterator.position.GetCurrentPatient();
+        currentPatientPos = currentPatient.getPriorityQueue();
+
+        if(currentPatientPos == newPatientPos){
+            int timeDiff = CompareTimer(currentPatient.getPatientTimeOfArrival(), newPatient.getPatientTimeOfArrival());
+            if(timeDiff == -1){
+                listIterator.AddNodeHere(currentPatient);
+                listIterator.Restart();
             }else{
                 listIterator.Next();
             }
-
-            listIterator.MovetoCorrectPosition(newPatient);
+        }else if((listIterator.previous.GetCurrentPatient().getPriorityQueue() == newPatientPos) && (currentPatientPos < newPatientPos)){
+            listIterator.AddNodeHere(currentPatient);
+            listIterator.Restart();
+        }else{
+            listIterator.Next();
         }
+
         //System.out.println(currentPatient.getPatientName());
     }
 

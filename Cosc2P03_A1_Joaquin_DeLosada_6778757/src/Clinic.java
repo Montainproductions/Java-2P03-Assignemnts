@@ -70,7 +70,7 @@ public class Clinic {
                 break;
             }
         }
-        //wq.printList();
+        wq.printList();
     }
 
     public static void main(String[] args) {

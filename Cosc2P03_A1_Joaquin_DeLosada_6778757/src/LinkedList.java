@@ -15,20 +15,6 @@ public class LinkedList {
             previous = null;
         }
 
-        public void MovetoCorrectPosition(Patient newPatient){
-            Patient currentPatient = position.GetCurrentPatient();
-            if(currentPatient.getPriorityQueue() == newPatient.getPriorityQueue()){
-                int timeDiff = CompareTime()
-                if(currentPatient.getPatientTimeOfArrival() > newPatient.getPatientTimeOfArrival()){
-                    AddNodeHere(currentPatient);
-                }else{
-                    Next();
-                }
-            }else{
-                Next();
-            }
-        }
-
         public void Next(){
             if(!HasNext()){
                 throw new NoSuchElementException();
@@ -43,8 +29,9 @@ public class LinkedList {
         }
 
         public void AddNodeHere(Patient newPatient){
-            Node temp = new Node(newPatient, previous, position);
-            previous.SetLink(temp);
+            Node temp = new Node(newPatient, position.GetPreviousNode(), position);
+            position.previousNode.nextNode = temp;
+            position.previousNode = temp;
         }
 
         public void DeleteNodeHere(){
@@ -63,9 +50,13 @@ public class LinkedList {
         head = null;
     }
 
-    public void AddtoStart(Patient newPatient, int count){
+    public void FirstLink(Patient patient){
+        head = new Node(patient, null, head);
+    }
+
+    public void AddtoStart(Patient newPatient){
         Node newHead = new Node(newPatient, null, head);
-        head.previousNode = newHead;
+        head.SetPreviouseLink(newHead);
         head = newHead;
     }
 
