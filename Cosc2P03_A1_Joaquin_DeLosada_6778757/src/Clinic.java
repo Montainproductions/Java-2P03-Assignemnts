@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.Deque;
 
 public class Clinic {
-    public static InternalTimer timer = new InternalTimer(); //Set the timer
-    public static WaitQueue wq = new WaitQueue();
-    public static Patient[] patients;
-    public static int currPatientToEnter = 0;
+    public static InternalTimer timer = new InternalTimer(); //Instantiates timer
+    public static WaitQueue wq = new WaitQueue(); //Instantiates the waitqueue
+    public static Patient[] patients; //Instantiates the patients array
+    public static int currPatientToEnter = 0; //The current array position
 
-    public static void RunClinic(){
+    public static void RunClinic(){ //reads the data and monitors when to send someone to wait queue
         ReadData();
         Monitor();
     }
@@ -56,21 +56,27 @@ public class Clinic {
 
     public static void Monitor(){
         timer.StartDay(); //Start the day and 9 am
-        for(int i = 0; i <= 479; i++) {
-            timer.TimerIncrease();
-            int timeDiff = timer.CompareTime(patients[currPatientToEnter].getPatientTimeOfArrival());
+        boolean beingVaxxed = false;
+        for(int i = 0; i <= 479; i++) { //Each in number is one minute and will run through the whole day. Done in case more people are added to the list at a later time
+            timer.TimerIncrease(); //Increase by one minute
+            int timeDiff = timer.CompareTime(patients[currPatientToEnter].getPatientTimeOfArrival()); //Checks if the current patient has the same time as current patient then sends them in.
             //System.out.println("Time diffrence: " + timeDiff);
-            if (timeDiff == 0) {
-                wq.getPatient(patients[currPatientToEnter]);
-                if(!((currPatientToEnter + 1) == patients.length)){
+            if (timeDiff == 0) { //If the same time then send them to the wait queue
+                wq.getPatient(patients[currPatientToEnter]); //Sends to wait queue
+                if(!((currPatientToEnter + 1) == patients.length)){ //If there are still patients in array then check the next one
                     currPatientToEnter++;
                 }
                 //System.out.println("Current pos in array: " + currPatientToEnter);
-            }else if(timeDiff == -1){
+            }else if(timeDiff == -1){//If the current patient has a past their current time then break. This is mostly for the last person in the array so it dosent infenetly continue the for loop when there arent any more people coming into the building.
                 break;
             }
+            beingVaxxed = wq.CheckVax(beingVaxxed); //Checks if somebody can be vacced and if true then the patient is being vacced
+            if(beingVaxxed){ //If the patient is being vacced then run this
+                beingVaxxed = timer.VaccineTimer(); //Will flip being vacced to false
+                wq.removeMax(); //Remove first person in list
+            }
         }
-        wq.printList();
+        wq.printList(); //Print the current list of wait queue
     }
 
     public static void main(String[] args) {

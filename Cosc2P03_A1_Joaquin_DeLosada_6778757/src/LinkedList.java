@@ -37,6 +37,7 @@ public class LinkedList {
         public void DeleteNodeHere(){
             previous.SetLink(position.GetNextNode());
             position.SetLink(position.GetNextNode());
+            position.GetNextNode();
         }
     }
 
@@ -50,11 +51,15 @@ public class LinkedList {
         head = null;
     }
 
-    public void FirstLink(Patient patient){
+    public void FirstLink(Patient patient){ //When there is no Nodes in the linked list
         head = new Node(patient, null, head);
     }
 
-    public void AddtoStart(Patient newPatient){
+    public void FinalLink(Patient patient){ //Add to the end of the LL
+        head = new Node(patient, head, null);
+    }
+
+    public void AddtoStart(Patient newPatient){ //Add to the start of the LL
         Node newHead = new Node(newPatient, null, head);
         head.SetPreviouseLink(newHead);
         head = newHead;
@@ -79,29 +84,6 @@ public class LinkedList {
         return count;
     }
 
-    /* This is shown in the book as usefull but as I work on the
-
-    public boolean Contains(Patient patient){
-        return (Find(patient) != null);
-    }
-
-    public Patient FindsPatient(Patient target){
-        return Find(target).GetCurrentPatient();
-    }
-
-    private Node Find(Patient target){
-        Node position = head;
-        Patient patientAtNode;
-        while(position != null){
-            patientAtNode = position.currentPatient;
-            if(patientAtNode.equals(target)){
-                return position;
-            }
-            position = position.GetNextNode();
-        }
-        return null;
-    }*/
-
     public void OutputList(){
         Node position = head;
         while(position != null){
@@ -110,10 +92,4 @@ public class LinkedList {
             position = position.GetNextNode();
         }
     }
-
-    public boolean isEmpty(){
-        return (head == null);
-    }
-
-//    public boolean Equals(Patient otherPatient){}
 }

@@ -23,9 +23,14 @@ public class WaitQueue {
 
         if(currentPatientPos == newPatientPos){
             int timeDiff = CompareTimer(currentPatient.getPatientTimeOfArrival(), newPatient.getPatientTimeOfArrival());
+            System.out.println(timeDiff);
             if(timeDiff == -1){
-                listIterator.AddNodeHere(currentPatient);
-                listIterator.Restart();
+                if(s == 1){
+                    list.FinalLink(newPatient);
+                }else{
+                    listIterator.AddNodeHere(currentPatient);
+                    listIterator.Restart();
+                }
             }else{
                 listIterator.Next();
             }
@@ -44,9 +49,11 @@ public class WaitQueue {
     }
 
     public void removeMax(){
+        listIterator.Restart();
+        listIterator.DeleteNodeHere();
     }
 
-    public void getPatient(Patient newPatient){
+    public void getPatient(Patient newPatient){ //Recives the new patient and checks its position and trys to insert it
         currentPatient = newPatient;
         CalcPos(currentPatient);
         currentPatient.setPriorityQueue(patientScore);
@@ -67,6 +74,17 @@ public class WaitQueue {
         if(currentPatient.getPatientCondition() == "Pregnancy" || currentPatient.getPatientCondition() == "Cancer" || currentPatient.getPatientCondition() == "Diabetes" || currentPatient.getPatientCondition() == "Asthma" || currentPatient.getPatientCondition() == "Primary Immune Deficiency" || currentPatient.getPatientCondition() == "Cardiovascular Disease"){
             patientScore++;
         }
+    }
+
+    public boolean CheckVax(boolean beingVaxxed){
+        int s = list.Size();
+        boolean canBeVaxxed;
+        if(s > 0 && !beingVaxxed){
+            canBeVaxxed = true;
+        }else{
+            canBeVaxxed = false;
+        }
+        return canBeVaxxed;
     }
 
     public int CompareTimer(String currPatient, String newPatient){
