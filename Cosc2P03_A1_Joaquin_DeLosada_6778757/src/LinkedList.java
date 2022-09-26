@@ -2,52 +2,46 @@ import java.util.NoSuchElementException;
 
 public class LinkedList {
     public class ListIterator{
-        public Node position;
-        public Node previous;
+        public Node position; //Current position of the nodes with its related info
+        public Node previous; //Previouse node so it can traverse backwards in the nodes
 
-        public ListIterator(){
+        public ListIterator(){ //Initilize at the start of the list
             position = head;
             previous = null;
         }
 
-        public void Restart(){
+        public void Restart(){ //Go back to the start of the list.
             position = head;
             previous = null;
         }
 
-        public void Next(){
-            if(!HasNext()){
+        public void Next(){ //Go to the next Node
+            if(!HasNext()){ //If no more patients in the linked list then stop
                 throw new NoSuchElementException();
             }
             Patient returnPatient = position.GetCurrentPatient();
-            previous = position;
-            position = position.GetNextNode();
+            previous = position;//Sets the preveous node to the current one
+            position = position.GetNextNode(); //Sets the next Node to the current Node
         }
 
-        public boolean HasNext(){
+        public boolean HasNext(){ //Checks if next node exists
             return (position != null);
         }
 
-        public void AddNodeHere(Patient newPatient){
-            Node temp = new Node(newPatient, position.GetPreviousNode(), position);
-            position.previousNode.nextNode = temp;
-            position.previousNode = temp;
-        }
-
-        public void DeleteNodeHere(){
-            previous.SetLink(position.GetNextNode());
-            position.SetLink(position.GetNextNode());
-            position.GetNextNode();
+        public void AddNodeHere(Patient newPatient){ //Will split the linked list in two and add a new node in the middle
+            Node temp = new Node(newPatient, position.GetPreviousNode(), position); //new node and what its connected to the other nodes
+            position.previousNode.nextNode = temp; //Connect the previous Node to the new node
+            position.previousNode = temp; //Connect the next node to the new node
         }
     }
 
-    private Node head;
+    private Node head; //Sets up the head node (Technicly the current position from what I understand)
 
     public ListIterator iterator(){
         return new ListIterator();
     }
 
-    public LinkedList(){
+    public LinkedList(){ //Sets the head node
         head = null;
     }
 
@@ -65,7 +59,7 @@ public class LinkedList {
         head = newHead;
     }
 
-    public boolean DeleteHeadNode(){
+    public boolean DeleteHeadNode(){ //Delete the head node if it exists
         if(head != null){
             head = head.GetNextNode();
             return true;
@@ -74,22 +68,22 @@ public class LinkedList {
         }
     }
 
-    public int Size(){
+    public int Size(){ //Runs through the linked list and counts how many nodes exist
         int count = 0;
         Node position = head;
-        while(position != null){
+        while(position != null){ //Counts till it reaches the end
             count++;
             position = position.GetNextNode();
         }
         return count;
     }
 
-    public void OutputList(){
+    public void OutputList(){ //Will pring each node (Currently only the name but other in for for patients is valid)
         Node position = head;
-        while(position != null){
+        while(position != null){ //Goes through each position untill the end
             System.out.println(position.GetCurrentPatient().getPatientName());
 
-            position = position.GetNextNode();
+            position = position.GetNextNode(); //Goes  to the next node
         }
     }
 }

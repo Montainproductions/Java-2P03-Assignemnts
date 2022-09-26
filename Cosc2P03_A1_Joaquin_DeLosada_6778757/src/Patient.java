@@ -24,15 +24,13 @@ public class Patient {
 
     public String getPatientName(){return patientName;} //Returns the current patients name
 
-    public int getPatientAge(){return patientAge;}
+    public int getPatientAge(){return patientAge;} //Returns the patients age
 
-    public String getPatientOccupation() {
-        return patientOccupation;
-    }
+    public String getPatientOccupation(){return patientOccupation;} //Returns the patients occupation
 
-    public String getPatientCondition(){return patientCondition;}
+    public String getPatientCondition(){return patientCondition;} //Returns the patients condition
 
-    public String getPatientTimeOfArrival(){return patientTimeOfArrival;}
+    public String getPatientTimeOfArrival(){return patientTimeOfArrival;} //Returns the patients time of arrival
 
-    public int getPriorityQueue(){return priorityQueue;}
+    public int getPriorityQueue(){return priorityQueue;} //Returns the patients priority queue
 }
