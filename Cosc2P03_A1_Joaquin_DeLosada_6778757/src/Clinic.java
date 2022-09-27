@@ -70,11 +70,11 @@ public class Clinic {
             }else if(timeDiff == -1){//If the current patient has a past their current time then break. This is mostly for the last person in the array so it dosent infenetly continue the for loop when there arent any more people coming into the building.
                 break;
             }
-            beingVaxxed = wq.CheckVax(beingVaxxed); //Checks if somebody can be vacced and if true then the patient is being vacced
+            /*beingVaxxed = wq.CheckVax(beingVaxxed); //Checks if somebody can be vacced and if true then the patient is being vacced
             if(beingVaxxed){ //If the patient is being vacced then run this
                 beingVaxxed = timer.VaccineTimer(); //Will flip being vacced to false
                 wq.removeMax(); //Remove first person in list
-            }
+            }*/
         }
         wq.printList(); //Print the current list of wait queue
     }

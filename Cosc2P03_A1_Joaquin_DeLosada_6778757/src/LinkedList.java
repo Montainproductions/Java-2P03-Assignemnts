@@ -45,11 +45,11 @@ public class LinkedList {
         head = null;
     }
 
-    public void FirstLink(Patient patient){ //When there is no Nodes in the linked list
+    public void AddtoStartFirstCase(Patient patient){ //When there is no Nodes in the linked list
         head = new Node(patient, null, head);
     }
 
-    public void FinalLink(Patient patient){ //Add to the end of the LL
+    public void AddToEnd(Patient patient){
         head = new Node(patient, head, null);
     }
 
