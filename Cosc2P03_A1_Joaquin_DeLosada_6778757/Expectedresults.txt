@@ -30,7 +30,23 @@ Kevin Murphy 0
 Amy Signh 0
 David Zelensky 0
 Joe Osteen 0
-Fiona Bruce
+Fiona Bruce 0
+
+Patient Name: Eric Chen Patient Queue: 2
+Patient Name: Rachael Taylor Patient Queue: 1
+Patient Name: Peter Russell Patient Queue: 2
+Patient Name: Diana Fraser Patient Queue: 1
+Patient Name: Kelly Walter Patient Queue: 2
+Patient Name: Joe Osteen Patient Queue: 1
+Patient Name: Steve Kerry Patient Queue: 2
+Patient Name: Esther Valley Patient Queue: 1
+Patient Name: Terry Apple Patient Queue: 1
+Patient Name: Carol Young Patient Queue: 0
+Patient Name: Kevin Murphy Patient Queue: 0
+Patient Name: Amy Singh Patient Queue: 0
+Patient Name: Alice Wood Patient Queue: 0
+Patient Name: David Zelensky Patient Queue: 0
+Patient Name: Fiona Bruce Patient Queue: 0
 
 				e(1, 9:40)
 a(2,9:03),b(2,9:05),c(1,9:23),p(0, 10:11)

@@ -97,7 +97,7 @@ public class LinkedList {
     public void OutputList(){ //Will pring each node (Currently only the name but other in for for patients is valid)
         Node position = head;
         while(position != null){ //Goes through each position untill the end
-            System.out.println(position.GetCurrentPatient().getPatientName());
+            System.out.println("Patient Name: " + position.GetCurrentPatient().getPatientName() + " Patient Queue: " + position.GetCurrentPatient().getPriorityQueue());
             position = position.GetNextNode(); //Goes  to the next node
         }
         System.out.println(" ");
