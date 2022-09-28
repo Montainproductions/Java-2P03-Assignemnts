@@ -1,0 +1,36 @@
+Carol young 0
+Kevin Murphy 0
+Rachael Taylor 1
+Eric Chen 2
+Amy Singh 0
+Diana Fraser 1
+Peter Russell 2
+Alice Wood 1
+David Zelensky 0
+Joe Osteen 0
+Kelly Walter 2
+Esther Vally 1
+Steve Kerry 2
+Fiona Bruce 0
+Terry Apple 1
+
+Peter Russel one too low
+
+Eric Chen 2
+Peter Russell 2
+Kelly Walter 2
+Steve Kerry 2
+Rachel Taylor 1
+Diana Fraser 1
+Alice Wood 1
+Esther Vally 1
+Terry Apple 1
+Carol Young 0
+Kevin Murphy 0
+Amy Signh 0
+David Zelensky 0
+Joe Osteen 0
+Fiona Bruce
+
+				e(1, 9:40)
+a(2,9:03),b(2,9:05),c(1,9:23),p(0, 10:11)
