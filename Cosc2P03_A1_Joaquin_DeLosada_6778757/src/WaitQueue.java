@@ -16,37 +16,38 @@ public class WaitQueue {
         int currentPatientQueue; //Priority queue of patient being checked
         int newPatientQueue = newPatient.getPriorityQueue();//Priority queue of the patient being added
 
-        if(s == 0){
-            list.AddtoStartFirstCase(newPatient);
+        if(s == 0){ //If the linked list is empty then add the first node
+            list.AddtoStartFirstCase(newPatient); //Sets the first node of the linked list
             //printList();
-            return;
+            return; //Will return so that the rest of the method dosent run
         }
         currentPatient = listIterator.position.GetCurrentPatient(); //Finds the patient in the current node
         currentPatientQueue = currentPatient.getPriorityQueue(); //Priority queue of the patient in the node
         //System.out.println("Current Patient queue: " + currentPatientPos + ", " + "New Patient queue: " + newPatientQueue);
 
-        //If your reading this comments then yes its spaghetti code yes it works I fear touching this.
+        //If your reading this comments then, yes its spaghetti code, yes it works. And I fear touching this in lue of more null point exeptions and not being able to return to a good state.
+        //Will continuasly loop through the linked list untill it reaches the end of the linked list or it gets booted out with the return
         while(listIterator.position != null){
             //System.out.println("Current P Name: " + currentPatient.getPatientName() + " New P Name: " + newPatient.getPatientName());
             //System.out.println("Current P Queue: " + currentPatientQueue + " New P Queue: " + newPatientQueue);
-            if(newPatientQueue == 0){
-                list.AddToEnd(newPatient);
+            if(newPatientQueue == 0){ //If the priority queue of the patient is 0 then it will be added to the end of the list
+                list.AddToEnd(newPatient); //Add to end of list
                 //printList();
-                listIterator.Restart();
-                return;
-            }else if(currentPatientQueue >= newPatientQueue) {
-                listIterator.position = listIterator.Next();
+                listIterator.Restart(); //Have the position of the list iterator restart to the begining
+                return; //Return so that the rest of the method dosent run
+            }else if(currentPatientQueue >= newPatientQueue) { //If the current patients queue value is greater than or equal to the new patients queue value then go to the next position and update the position
+                listIterator.position = listIterator.Next(); //Go to the next patient and updated the position in the listIterator
                 //System.out.println("To next patient");
                 currentPatient = listIterator.position.GetCurrentPatient(); //Finds the patient in the current node
                 currentPatientQueue = currentPatient.getPriorityQueue(); //Priority queue of the patient in the node
-            }else{
-                if(listIterator.previous == null){
+            }else{ //Once the new patients has a queue value greater than the current patient queue it will add either at the start of the list or in that position depending on where the position that the node is at
+                if(listIterator.previous == null){ //If the previous node is null then this means that it is at the start of the linked list so it adds the patient to the start
                     list.AddtoStart(newPatient);
-                }else{
-                    listIterator.AddNodeHere(newPatient);
+                }else{ //If the patient is somewhere in the middle of the linked list then will add it to that position
+                    listIterator.AddNodeHere(newPatient); //Add patient in current node
                 }
                 //printList();
-                listIterator.Restart();
+                listIterator.Restart(); //Return to the start of the linked list node
                 return;
             }
         }
