@@ -15,6 +15,12 @@ public class Node {
         //System.out.println(newPatient.getPatientName());
     }
 
+    public Node(Patient newPatient,Node previousNode){
+        currentPatient = newPatient;
+        this.previousNode = previousNode;
+        nextNode = null;
+    }
+
     public void SetLink(Node newNode){ //Sets link to the next Node
         nextNode = newNode;
     }

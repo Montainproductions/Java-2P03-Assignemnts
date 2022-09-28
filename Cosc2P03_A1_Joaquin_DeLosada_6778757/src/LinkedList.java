@@ -15,13 +15,13 @@ public class LinkedList {
             previous = null;
         }
 
-        public void Next(){ //Go to the next Node
+        public Node Next(){ //Go to the next Node
             if(!HasNext()){ //If no more patients in the linked list then stop
                 throw new NoSuchElementException();
             }
-            Patient returnPatient = position.GetCurrentPatient();
             previous = position;//Sets the preveous node to the current one
             position = position.GetNextNode(); //Sets the next Node to the current Node
+            return position;
         }
 
         public boolean HasNext(){ //Checks if next node exists
@@ -33,9 +33,14 @@ public class LinkedList {
             position.previousNode.nextNode = temp; //Connect the previous Node to the new node
             position.previousNode = temp; //Connect the next node to the new node
         }
+
+        public void DeleteNodeHere(){
+            position.GetPreviousNode().SetLink(position.GetNextNode());
+
+        }
     }
 
-    private Node head; //Sets up the head node (Technicly the current position from what I understand)
+    private Node head, tail; //Sets up the head node (Technicly the current position from what I understand)
 
     public ListIterator iterator(){
         return new ListIterator();
@@ -43,14 +48,21 @@ public class LinkedList {
 
     public LinkedList(){ //Sets the head node
         head = null;
+        tail = null;
     }
 
     public void AddtoStartFirstCase(Patient patient){ //When there is no Nodes in the linked list
-        head = new Node(patient, null, head);
+        head = tail = new Node(patient, null, head);
+        head.previousNode = null;
+        tail.nextNode = null;
     }
 
     public void AddToEnd(Patient patient){
-        head = new Node(patient, head, null);
+        Node endNode = new Node(patient, head,null);
+        tail.nextNode = endNode;
+        endNode.previousNode = tail;
+        tail = endNode;
+        tail.nextNode = null;
     }
 
     public void AddtoStart(Patient newPatient){ //Add to the start of the LL
@@ -68,6 +80,10 @@ public class LinkedList {
         }
     }
 
+    public Node ReturnHead(){
+        return head;
+    }
+
     public int Size(){ //Runs through the linked list and counts how many nodes exist
         int count = 0;
         Node position = head;
@@ -82,8 +98,8 @@ public class LinkedList {
         Node position = head;
         while(position != null){ //Goes through each position untill the end
             System.out.println(position.GetCurrentPatient().getPatientName());
-
             position = position.GetNextNode(); //Goes  to the next node
         }
+        System.out.println(" ");
     }
 }

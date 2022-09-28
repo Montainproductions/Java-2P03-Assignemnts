@@ -3,12 +3,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.Objects;
 
 public class Clinic {
     public static InternalTimer timer = new InternalTimer(); //Instantiates timer
     public static WaitQueue wq = new WaitQueue(); //Instantiates the waitqueue
     public static Patient[] patients; //Instantiates the patients array
     public static int currPatientToEnter = 0; //The current array position
+    public static int patientQueue;
 
     public static void RunClinic(){ //reads the data and monitors when to send someone to wait queue
         ReadData();
@@ -43,6 +45,7 @@ public class Clinic {
                 newPatient.setPatientOccupation(currentPatient[3]); //Set the patients occupation
                 newPatient.setPatientCondition(currentPatient[4]); //Set the patients condition
                 newPatient.setPatientTimeOfArrival(currentPatient[5]); //Set the patients time of arrival
+                CalcPos(newPatient); //Calculate priority queue
                 patients[patientList.indexOf(i)] = newPatient; //Add the patient to the array of patients
                 //System.out.println("Current patient: " + newPatient.getPatientName());
                 //System.out.println("Patient Array: " + patients);
@@ -70,13 +73,22 @@ public class Clinic {
             }else if(timeDiff == -1){//If the current patient has a past their current time then break. This is mostly for the last person in the array so it dosent infenetly continue the for loop when there arent any more people coming into the building.
                 break;
             }
-            /*beingVaxxed = wq.CheckVax(beingVaxxed); //Checks if somebody can be vacced and if true then the patient is being vacced
-            if(beingVaxxed){ //If the patient is being vacced then run this
-                beingVaxxed = timer.VaccineTimer(); //Will flip being vacced to false
-                wq.removeMax(); //Remove first person in list
-            }*/
         }
         wq.printList(); //Print the current list of wait queue
+    }
+
+    public static void CalcPos(Patient newPatient){ //Will calculate the priority queue of the patient
+        patientQueue = 0;
+        if(newPatient.getPatientAge() >= 60){
+            patientQueue++;
+        }
+        if(Objects.equals(newPatient.getPatientOccupation(), "Teacher") || Objects.equals(newPatient.getPatientOccupation(), "Nurse") || Objects.equals(newPatient.getPatientOccupation(), "Care Giver")){
+            patientQueue++;
+        }
+        if(Objects.equals(newPatient.getPatientCondition(), "Pregnant") || Objects.equals(newPatient.getPatientCondition(), "Cancer") || Objects.equals(newPatient.getPatientCondition(), "Diabetes") || Objects.equals(newPatient.getPatientCondition(), "Asthma") || Objects.equals(newPatient.getPatientCondition(), "Primary Immune Deficiency") || Objects.equals(newPatient.getPatientCondition(), "Cardiovascular Disease")){
+            patientQueue++;
+        }
+        newPatient.setPriorityQueue(patientQueue);
     }
 
     public static void main(String[] args) {
