@@ -36,7 +36,8 @@ public class LinkedList {
 
         public void DeleteNodeHere(){
             position.GetPreviousNode().SetLink(position.GetNextNode());
-
+            position.nextNode.previousNode = position.GetPreviousNode();
+            position = position.GetNextNode();
         }
     }
 
@@ -82,6 +83,21 @@ public class LinkedList {
 
     public Node ReturnHead(){
         return head;
+    }
+
+
+
+    public Node Find(Patient targetPatient){
+        Node patientPosition = head;
+        Patient patientAtPos;
+        while(patientPosition != null){
+            patientAtPos = patientPosition.GetCurrentPatient();
+            if(patientAtPos.equals(targetPatient)){
+                return patientPosition;
+            }
+            patientPosition = patientPosition.GetNextNode();
+        }
+        return null;
     }
 
     public int Size(){ //Runs through the linked list and counts how many nodes exist

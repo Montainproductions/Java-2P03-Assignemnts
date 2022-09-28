@@ -11,6 +11,9 @@ public class Clinic {
     public static Patient[] patients; //Instantiates the patients array
     public static int currPatientToEnter = 0; //The current array position
     public static int patientQueue;
+    public static Patient patientBeingVaxxed;
+    public static int vaxTimer = 0;
+    public static boolean beingVaxxed = false;
 
     public static void RunClinic(){ //reads the data and monitors when to send someone to wait queue
         ReadData();
@@ -59,7 +62,6 @@ public class Clinic {
 
     public static void Monitor(){
         timer.StartDay(); //Start the day and 9 am
-        boolean beingVaxxed = false;
         for(int i = 0; i <= 479; i++) { //Each in number is one minute and will run through the whole day. Done in case more people are added to the list at a later time
             timer.TimerIncrease(); //Increase by one minute
             int timeDiff = timer.CompareTime(patients[currPatientToEnter].getPatientTimeOfArrival()); //Checks if the current patient has the same time as current patient then sends them in.
@@ -71,7 +73,25 @@ public class Clinic {
                 }
                 //System.out.println("Current pos in array: " + currPatientToEnter);
             }else if(timeDiff == -1){//If the current patient has a past their current time then break. This is mostly for the last person in the array so it dosent infenetly continue the for loop when there arent any more people coming into the building.
-                break;
+            }
+            if(wq.list.Size() > 0) { //While the list has an node in it then it will try to set up the vax for a patient
+
+                //There is a null point exeption when it tries to eliminate terry apple again but I dont know why since it shouldnt happen. But the due date is coming so I will upload what I have
+                //System.out.println(wq.list.Size());
+                if(!beingVaxxed && vaxTimer == 0){ //If no one is being vaccened then choose the person in head of the queue
+                    patientBeingVaxxed = wq.list.ReturnHead().GetCurrentPatient();
+                    beingVaxxed = true;
+                    //System.out.println("Choosing patient: " + patientBeingVaxxed.getPatientName());
+                }else if(beingVaxxed && vaxTimer < 15) { //If someone is chossen and the timer hasent reached 15 min then increase timer
+                    vaxTimer++;
+                }else if(beingVaxxed){ //Once the timer has reached 15 then take the patient out of the list and restart timer
+                    vaxTimer = 0;
+                    beingVaxxed = false;
+                    System.out.println("Eliminating patient");
+                    System.out.println(wq.list.Find(patientBeingVaxxed).GetCurrentPatient().getPatientName());
+                    wq.removePatient(patientBeingVaxxed);
+                    wq.listIterator.Restart();
+                }
             }
         }
         wq.printList(); //Print the current list of wait queue

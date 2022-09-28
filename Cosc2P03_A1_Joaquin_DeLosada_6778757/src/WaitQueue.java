@@ -64,8 +64,15 @@ public class WaitQueue {
         System.out.println(" ");
     }
 
-    public void removePatient(Patient delPatient){ //Remove the first node. Dosent technicly work
-        list.DeleteHeadNode();
+    public void removePatient(Patient delPatient){ //Remove the node which contains the patient
+        if(list.Size() != 0)
+        listIterator.position = list.Find(delPatient);
+        listIterator.DeleteNodeHere();
+        if(listIterator.previous != null) {
+            listIterator.DeleteNodeHere();
+        }else{
+            list.DeleteHeadNode();
+        }
     }
 
     public void getPatient(Patient newPatient){ //Recives the new patient and checks its position and trys to insert it
