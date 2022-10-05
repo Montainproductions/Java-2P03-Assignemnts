@@ -5,6 +5,8 @@ public class Drug {
 
     public boolean SMILES;
 
+    public Drug left, right;
+
     public void SetDrugBankID(int drugID){
         drugBankID = drugID;
     }
