@@ -1,22 +1,16 @@
 public class Drug {
-    public int drugBankID, score;
-
-    public String genericName, url, drugGroups;
-
-    public boolean SMILES;
+    public String genericName, sMILES, drugBankID, url, drugGroups, score;
 
     public Drug left, right;
 
-    public void SetDrugBankID(int drugID){
-        drugBankID = drugID;
-    }
-
-    public void SetScore(int score){
-        this.score = score;
-    }
-
     public void SetGenericName(String name){
         genericName = name;
+    }
+
+    public void SetSmiles(String sMILES){this.sMILES = sMILES;}
+
+    public void SetDrugBankID(String drugID){
+        drugBankID = drugID;
     }
 
     public void SetURL(String url){
@@ -27,26 +21,28 @@ public class Drug {
         drugGroups = group;
     }
 
+    public void SetScore(String score){
+        this.score = score;
+    }
+
     public void DisplayDrug(){
         System.out.println("Drug name: " + genericName);
+        System.out.println("Drug SMILES?: " + sMILES);
         System.out.println("Drug ID: " + drugBankID);
-        System.out.println("Drug Score: " + score);
         System.out.println("Drug URL: " + url);
         System.out.println("Drug Group: " + drugGroups);
-        System.out.println("Drug SMILES?: " + SMILES);
+        System.out.println("Drug Score: " + score);
         System.out.println(" ");
-    }
-
-    public int ReturnDrugBankID(){
-        return drugBankID;
-    }
-
-    public int ReturnScore(){
-        return score;
     }
 
     public String ReturnName(){
         return genericName;
+    }
+
+    public String ReturnSMILES(){return sMILES;}
+
+    public String ReturnDrugBankID(){
+        return drugBankID;
     }
 
     public String ReturnURL(){
@@ -55,5 +51,9 @@ public class Drug {
 
     public String ReturnGroup(){
         return drugGroups;
+    }
+
+    public String ReturnScore(){
+        return score;
     }
 }

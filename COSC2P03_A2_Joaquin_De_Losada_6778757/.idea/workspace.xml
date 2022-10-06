@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9c440057-5e7d-416b-8b9c-f5b8df4b1621" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/recourses/dockedApproved.tab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BinaryNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BinaryNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Drug.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Drug.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DrugBank.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DrugBank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DrugBank.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,9 +37,14 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/monta/Documents/GitHub/Java-2P03-Assignemnts/Cosc2P03_A2_Joaquin_De_Losada_6778757"
+    "last_opened_file_path": "C:/Users/jd19ul/Documents/GitHub/Java-2P03-Assignemnts/COSC2P03_A2_Joaquin_De_Losada_6778757"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jd19ul\Documents\GitHub\Java-2P03-Assignemnts\COSC2P03_A2_Joaquin_De_Losada_6778757\recourses" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
