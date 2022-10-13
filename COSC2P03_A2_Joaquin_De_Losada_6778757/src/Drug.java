@@ -3,6 +3,22 @@ public class Drug {
 
     public Drug left, right;
 
+    public Drug(String genericName, String SMILES, String DrugBankID, String URL, String DrugGroup, String Score){
+        SetGenericName(genericName);
+        SetSmiles(SMILES);
+        SetDrugBankID(DrugBankID);
+        SetURL(URL);
+        SetDrugGroup(DrugGroup);
+        SetScore(Score);
+        left = null;
+        right = null;
+    }
+
+    /*public void Drug(Drug newDrug){
+        left = null;
+        right = null;
+    }*/
+
     public void SetGenericName(String name){
         genericName = name;
     }

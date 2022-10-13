@@ -41,13 +41,7 @@ public class DrugBank {
             drugsArray = new Drug[totalArrayLength]; //Create the array of ADT of patients of the size of patients
             drugList.forEach((i) ->{ //Go through each arraylist of patient string to  split the string up and add it to a patient data type
                 String[] currentDrug = i.split("\\t"); //Spliting the string into an array
-                Drug newDrug = new Drug(); //Create a patient data type
-                newDrug.SetGenericName(currentDrug[0]); //Set the drug name
-                newDrug.SetSmiles(currentDrug[1]); //Set the drug SMILES
-                newDrug.SetDrugBankID(currentDrug[2]); //Set drug ID
-                newDrug.SetURL(currentDrug[3]); //Set drug URL
-                newDrug.SetDrugGroup(currentDrug[4]); //Set drug group
-                newDrug.SetScore(currentDrug[5]); //Set the drug score
+                Drug newDrug = new Drug(currentDrug[0], currentDrug[1], currentDrug[2], currentDrug[3], currentDrug[4], currentDrug[5]); //Create a patient data type
                 //System.out.println("Current patient: " + newPatient.getPatientName());
                 //System.out.println("Patient Array: " + patients);
                 drugsArray[drugList.indexOf(i)] = newDrug;
@@ -61,20 +55,28 @@ public class DrugBank {
         currentDrug.DisplayDrug();
     }
 
-    public void CreateBinaryNode(Drug){
-        if(eoa){
-            return;
-        }
-
-        if(root == null){
-
-        }
-
-        if()
+    public void CreateBinaryNode(){
+        root = Insert(drugsArray[0],drugsArray[1]);
     }
 
-    public void Insert(){
+    public Drug Insert(Drug currentDrug, Drug newDrug){
+        String[] newDrugIDString = newDrug.ReturnDrugBankID().split("D");
+        /*
+        if(currentDrug == null){
+            return new Drug(newDrug);
+        }
 
+        if(newDrug.ReturnDrugBankID() < currentDrug.ReturnDrugBankID()){
+            currentDrug.left = Insert(currentDrug.left, newDrug);
+        } else if(newDrug.ReturnDrugBankID() > currentDrug.ReturnDrugBankID()){
+            currentDrug.left = Insert(currentDrug.left, newDrug);
+        }else{
+            return currentDrug;
+        }
+        */
+
+        System.out.println(newDrugIDString[0]);
+        return currentDrug;
     }
 
     public void Depth(Drug drugNode, int depthValue){
