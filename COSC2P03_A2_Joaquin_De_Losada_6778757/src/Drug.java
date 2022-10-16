@@ -3,6 +3,11 @@ public class Drug {
 
     public Drug left, right;
 
+    public Drug(){
+        left = null;
+        right = null;
+    }
+
     public Drug(String genericName, String SMILES, String DrugBankID, String URL, String DrugGroup, String Score){
         SetGenericName(genericName);
         SetSmiles(SMILES);

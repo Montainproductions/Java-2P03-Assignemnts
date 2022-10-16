@@ -3,7 +3,7 @@ public class Main {
         DrugBank db = new DrugBank();
 
         db.ReadData();
-        db.CreateBinaryNode();
 
+        db.Create(db.ReturnDrugArray());
     }
 }

@@ -6,13 +6,11 @@ import java.lang.Math;
 import java.util.ArrayList;
 
 public class DrugBank {
-    public Drug root;
-
-    public Drug currentDrug;
+    public Drug root, currentDrug;
 
     public void Start(){}
 
-    public static Drug[] drugsArray;
+    public ArrayList<String> drugList = new ArrayList<>();
 
 
     public void ReadData() {
@@ -25,7 +23,7 @@ public class DrugBank {
             readFile = new BufferedReader(new FileReader(txtFile)); //Read file
 
             String line = ""; //String that will contain each line
-            ArrayList<String> drugList = new ArrayList<>();
+            //ArrayList<String> drugList = new ArrayList<>();
             //System.out.println(readFile);
             while (line != null) { //Loop through the txt file
                 line = readFile.readLine(); //Read the line
@@ -34,18 +32,9 @@ public class DrugBank {
                 } //If the current line is null it will stop reading
                 if (line.contains("Generic Name")) {} //If the line ever contains name then it will do nothing. This is used for the first line of the txt which dosent contain a patient
                 else { //Will add to the current patients list and increase size of patients array for later
-                    totalArrayLength++;
                     drugList.add(line);
                 }
             }
-            drugsArray = new Drug[totalArrayLength]; //Create the array of ADT of patients of the size of patients
-            drugList.forEach((i) ->{ //Go through each arraylist of patient string to  split the string up and add it to a patient data type
-                String[] currentDrug = i.split("\\t"); //Spliting the string into an array
-                Drug newDrug = new Drug(currentDrug[0], currentDrug[1], currentDrug[2], currentDrug[3], currentDrug[4], currentDrug[5]); //Create a patient data type
-                //System.out.println("Current patient: " + newPatient.getPatientName());
-                //System.out.println("Patient Array: " + patients);
-                drugsArray[drugList.indexOf(i)] = newDrug;
-            });
         } catch (IOException e) { //If the file isnt found then print this
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         }
@@ -55,32 +44,58 @@ public class DrugBank {
         currentDrug.DisplayDrug();
     }
 
-    public void CreateBinaryNode(){
-        root = Insert(drugsArray[0],drugsArray[1]);
+    public void Create(ArrayList<String> insertionDrugs){
+        for(int i = 0; i < insertionDrugs.size(); i++){
+            //InOrderTraverse();
+            CreateBinaryNode(i);
+        }
     }
 
-    public Drug Insert(Drug currentDrug, Drug newDrug){
-        String[] newDrugIDString = newDrug.ReturnDrugBankID().split("D");
-        /*
+    public void CreateBinaryNode(int arrayValue){
+        root = Insert(root,drugList.get(arrayValue));
+    }
+
+    public Drug Insert(Drug currentDrug, String newDrugString){
+        String[] currentDrugArray = newDrugString.split("\\t"); //Spliting the string into an array
+
         if(currentDrug == null){
-            return new Drug(newDrug);
+            return new Drug(currentDrugArray[0], currentDrugArray[1], currentDrugArray[2], currentDrugArray[3], currentDrugArray[4], currentDrugArray[5]);
         }
 
-        if(newDrug.ReturnDrugBankID() < currentDrug.ReturnDrugBankID()){
-            currentDrug.left = Insert(currentDrug.left, newDrug);
-        } else if(newDrug.ReturnDrugBankID() > currentDrug.ReturnDrugBankID()){
-            currentDrug.left = Insert(currentDrug.left, newDrug);
+        System.out.println(currentDrug.drugBankID);
+
+        int newDrugID = DrugIDToInt(currentDrugArray[2]);
+
+        int currentDrugID = DrugIDToInt(currentDrug);
+
+        if(newDrugID < currentDrugID){
+            currentDrug.left = Insert(currentDrug.left, newDrugString);
+        } else if(newDrugID > currentDrugID){
+            currentDrug.right = Insert(currentDrug.right, newDrugString);
         }else{
             return currentDrug;
         }
-        */
 
-        System.out.println(newDrugIDString[0]);
         return currentDrug;
     }
 
-    public void Depth(Drug drugNode, int depthValue){
+    public boolean Search(Drug drugNode, String drugIDString){
+        if(drugNode == null){
+            return false;
+        }
 
+        int searchDrugID = DrugIDToInt(drugIDString);
+
+        int currentDrugID = DrugIDToInt(drugNode);
+
+        if(searchDrugID == currentDrugID){
+            DisplayDrug();
+            return true;
+        }else if(searchDrugID < currentDrugID){
+            return Search(drugNode.left, drugIDString);
+        }else{
+            return Search(drugNode.right, drugIDString);
+        }
     }
 
     public int Depth2(Drug drugNode){
@@ -105,5 +120,21 @@ public class DrugBank {
         DisplayDrug();
 
         InOrderTraverse(drugNode.right);
+    }
+
+    public int DrugIDToInt(String drugID){
+        String[] drugIDString = drugID.split("B");
+
+        return Integer.parseInt(drugIDString[1]);
+    }
+
+    public int DrugIDToInt(Drug drug){
+        String[] drugIDString = drug.ReturnDrugBankID().split("B");
+
+        return Integer.parseInt(drugIDString[1]);
+    }
+
+    public ArrayList<String> ReturnDrugArray(){
+        return drugList;
     }
 }
