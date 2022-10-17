@@ -91,6 +91,10 @@ public class DrugBank {
         InOrderTraverse(drugNode.right);
     }
 
+    public boolean Search(String drugIDString){
+        return Search(root, drugIDString);
+    }
+
     public boolean Search(Drug drugNode, String drugIDString){
         if(drugNode == null){
             return false;
@@ -107,6 +111,10 @@ public class DrugBank {
         }else{
             return Search(drugNode.right, drugIDString);
         }
+    }
+
+    public Drug Delete(String drugToEliminate){
+        //return Delete(root, );
     }
 
     public Drug Delete(Drug currentDrug, Drug drugToEliminate){
@@ -131,9 +139,17 @@ public class DrugBank {
         return currentDrug;
     }
 
+    /*public int Depth1(String drugID){
+        return Depth1();
+    }*/
+
     public int Depth1(Drug drugNode){
         int d = Math.max(Depth2(drugNode.left), Depth2(drugNode.right));
         return d+1;
+    }
+
+    public int Depth2(){
+        return Depth2(root);
     }
 
     public int Depth2(Drug drugNode){
@@ -162,10 +178,6 @@ public class DrugBank {
 
     public ArrayList<String> ReturnDrugArray(){
         return drugList;
-    }
-
-    public Drug ReturnDrugRoot(){
-        return root;
     }
 
     public Drug FindMin(Drug currentDrug){
