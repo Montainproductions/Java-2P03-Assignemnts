@@ -109,20 +109,23 @@ public class DrugBank {
         }
     }
 
-    public Drug Delete(Drug currentDrug, String drugIDToEliminate){
+    public Drug Delete(Drug currentDrug, Drug drugToEliminate){
         if(currentDrug == null){
             return currentDrug;
         }
 
+        String drugIDToEliminate = drugToEliminate.ReturnDrugBankID();
+
         int currentDrugID = DrugIDToInt(currentDrug);
         int searchDrugID = DrugIDToInt(drugIDToEliminate);
 
-        if(searchDrugID == currentDrugID){
-            DisplayDrug();
-        }else if(searchDrugID < currentDrugID){
-            return Delete(currentDrug.left, drugIDToEliminate);
-        }else{
-            return Delete(currentDrug.right, drugIDToEliminate);
+        if(searchDrugID < currentDrugID){
+            return Delete(currentDrug.left, drugToEliminate);
+        }else if(searchDrugID > currentDrugID){
+            return Delete(currentDrug.right, drugToEliminate);
+        } else if(currentDrug.left != null && currentDrug.right !=null){
+            currentDrug = FindMin(currentDrug.right);
+            currentDrug.right = Delete(currentDrug.right, currentDrug);
         }
 
         return currentDrug;
@@ -159,5 +162,19 @@ public class DrugBank {
 
     public ArrayList<String> ReturnDrugArray(){
         return drugList;
+    }
+
+    public Drug ReturnDrugRoot(){
+        return root;
+    }
+
+    public Drug FindMin(Drug currentDrug){
+        if(currentDrug == null){
+            return null;
+        }else if(currentDrug.left == null){
+            return currentDrug;
+        }
+
+        return FindMin(currentDrug);
     }
 }
