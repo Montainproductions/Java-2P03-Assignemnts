@@ -79,14 +79,25 @@ public class DrugBank {
         return currentDrug;
     }
 
+    public void InOrderTraverse(Drug drugNode){
+        if(drugNode == null){
+            return;
+        }
+
+        InOrderTraverse(drugNode.left);
+        //maincode?
+        DisplayDrug();
+
+        InOrderTraverse(drugNode.right);
+    }
+
     public boolean Search(Drug drugNode, String drugIDString){
         if(drugNode == null){
             return false;
         }
 
-        int searchDrugID = DrugIDToInt(drugIDString);
-
         int currentDrugID = DrugIDToInt(drugNode);
+        int searchDrugID = DrugIDToInt(drugIDString);
 
         if(searchDrugID == currentDrugID){
             DisplayDrug();
@@ -96,6 +107,30 @@ public class DrugBank {
         }else{
             return Search(drugNode.right, drugIDString);
         }
+    }
+
+    public Drug Delete(Drug currentDrug, String drugIDToEliminate){
+        if(currentDrug == null){
+            return currentDrug;
+        }
+
+        int currentDrugID = DrugIDToInt(currentDrug);
+        int searchDrugID = DrugIDToInt(drugIDToEliminate);
+
+        if(searchDrugID == currentDrugID){
+            DisplayDrug();
+        }else if(searchDrugID < currentDrugID){
+            return Delete(currentDrug.left, drugIDToEliminate);
+        }else{
+            return Delete(currentDrug.right, drugIDToEliminate);
+        }
+
+        return currentDrug;
+    }
+
+    public int Depth1(Drug drugNode){
+        int d = Math.max(Depth2(drugNode.left), Depth2(drugNode.right));
+        return d+1;
     }
 
     public int Depth2(Drug drugNode){
@@ -108,18 +143,6 @@ public class DrugBank {
 
         int d = Math.max(Depth2(drugNode.left), Depth2(drugNode.right));
         return d+1;
-    }
-
-    public void InOrderTraverse(Drug drugNode){
-        if(drugNode == null){
-            return;
-        }
-
-        InOrderTraverse(drugNode.left);
-        //maincode?
-        DisplayDrug();
-
-        InOrderTraverse(drugNode.right);
     }
 
     public int DrugIDToInt(String drugID){
