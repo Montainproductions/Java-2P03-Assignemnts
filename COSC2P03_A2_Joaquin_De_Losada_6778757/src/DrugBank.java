@@ -6,13 +6,12 @@ import java.lang.Math;
 import java.util.ArrayList;
 
 public class DrugBank {
-    public Drug root, currentDrug;
 
-    public void Start(){}
+    public Drug root, currentDrug;
 
     public ArrayList<String> drugList = new ArrayList<>();
 
-
+    //Will read the data from the file and place it in a array list
     public void ReadData() {
         File txtFile = new File("recourses//dockedApproved.tab"); //Gets the file
         BufferedReader readFile;
@@ -44,17 +43,20 @@ public class DrugBank {
         currentDrug.DisplayDrug();
     }
 
+    //Will create the Binadry tree
     public void Create(ArrayList<String> insertionDrugs){
         for(int i = 0; i < insertionDrugs.size(); i++){
             //InOrderTraverse();
-            CreateBinaryNode(i);
+            Insert(i);
         }
     }
 
-    public void CreateBinaryNode(int arrayValue){
+    //The method that starts the recursion of inserting the drugs into the tree
+    public void Insert(int arrayValue){
         root = Insert(root,drugList.get(arrayValue));
     }
 
+    //Will insert the drug in the closest apropiate position
     public Drug Insert(Drug currentDrug, String newDrugString){
         String[] currentDrugArray = newDrugString.split("\\t"); //Spliting the string into an array
 
@@ -79,47 +81,50 @@ public class DrugBank {
         return currentDrug;
     }
 
+    //Will traverse through the tree and print each drug
     public void InOrderTraverse(Drug drugNode){
         if(drugNode == null){
             return;
         }
 
         InOrderTraverse(drugNode.left);
-        //maincode?
         DisplayDrug();
 
         InOrderTraverse(drugNode.right);
     }
 
-    public boolean Search(String drugIDString){
+    //Search method called for main class
+    public Drug Search(String drugIDString){
         return Search(root, drugIDString);
     }
 
-    public boolean Search(Drug drugNode, String drugIDString){
-        if(drugNode == null){
-            return false;
+    //Main search method that is meant to be called recursivly
+    public Drug Search(Drug drugNode, String drugIDString){
+        if(drugNode == null){ //If the first node is null then return null
+            return null;
         }
 
+        //Turns the given node or string into an int to later check
         int currentDrugID = DrugIDToInt(drugNode);
         int searchDrugID = DrugIDToInt(drugIDString);
 
-        if(searchDrugID == currentDrugID){
+        if(searchDrugID == currentDrugID){ //If the ID of the drug im searching is the same as the current drugs ID then display it
             DisplayDrug();
-            return true;
-        }else if(searchDrugID < currentDrugID){
+            return drugNode;
+        }else if(searchDrugID < currentDrugID){ //If the ID of the drug I'm searching is less than the current drugID than go to the left and continue
             return Search(drugNode.left, drugIDString);
-        }else{
+        }else{ //If the ID of the drug I'm searhing is greater than the current drug ID then go to the right and continue
             return Search(drugNode.right, drugIDString);
         }
     }
 
-    public Drug Delete(String drugToEliminate){
-        //return Delete(root, );
+    public Drug Delete(String drugToEliminateID){
+        return Delete(root, Search(drugToEliminateID));
     }
 
     public Drug Delete(Drug currentDrug, Drug drugToEliminate){
         if(currentDrug == null){
-            return currentDrug;
+            return null;
         }
 
         String drugIDToEliminate = drugToEliminate.ReturnDrugBankID();
@@ -139,9 +144,9 @@ public class DrugBank {
         return currentDrug;
     }
 
-    /*public int Depth1(String drugID){
-        return Depth1();
-    }*/
+    public int Depth1(String drugID){
+        return Depth1(Search(drugID));
+    }
 
     public int Depth1(Drug drugNode){
         int d = Math.max(Depth2(drugNode.left), Depth2(drugNode.right));
@@ -164,6 +169,7 @@ public class DrugBank {
         return d+1;
     }
 
+    //Turn a string into an int ID
     public int DrugIDToInt(String drugID){
         String[] drugIDString = drugID.split("B");
 
