@@ -6,10 +6,11 @@ public class Main {
 
         db.ReadData();
         db.Create(db.ReturnDrugArray());
+        db.InOrderTraverse();
         db.Depth1("DB01050");
         db.Depth2();
         db.Search("DB01050");
         db.Search("DB00316");
-        db.Delete("DB01050");
+        //db.Delete("DB01050");
     }
 }
