@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class DrugBank {
 
+    File writeTo = new File("recourses//dockedApprovedSorted.tab");
+
+    public BufferedWriter writeToFile;
+
     public Drug root;
 
     public ArrayList<String> drugList = new ArrayList<>();
@@ -37,23 +41,26 @@ public class DrugBank {
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         }
 
+        //Runs the method for creating a method and allowing java to later write to said method
         CreateFile();
     }
 
+    //If the file called "Docked Approved Sorted" dosent exist it will create it or then nothing will happen. It will then set up the buffer writer so that it can later write to the file.
     public void CreateFile(){
         try {
-            File writeTo = new File("recourses//dockedApprovedSorted.tab");
             if(writeTo.createNewFile()) {
                 System.out.println("File Created: " + writeTo.getName());
             }else{
                 System.out.println("File exists.");
             }
+
+            writeToFile = new BufferedWriter(new PrintWriter(writeTo));
         }catch(IOException e){
             System.out.println("Error 404");
         }
     }
 
-    //Will create the Binadry tree
+    //Will create the Binadry tree by looping through the arraylist and inserting it
     public void Create(ArrayList<String> insertionDrugs){
         for(int i = 0; i < insertionDrugs.size(); i++){
             //InOrderTraverse();
@@ -68,9 +75,9 @@ public class DrugBank {
 
     //Will insert the drug in the closest apropiate position
     public Drug Insert(Drug currentDrug, String newDrugString){
-        String[] currentDrugArray = newDrugString.split("\\t"); //Spliting the string into an array
+        String[] currentDrugArray = newDrugString.split("\\t"); //Spliting the string into an array on the tabs
 
-        //Create a new Drug in the null position
+        //Create a new Drug in the null position with all of its info.
         if(currentDrug == null){
             return new Drug(currentDrugArray[0], currentDrugArray[1], currentDrugArray[2], currentDrugArray[3], currentDrugArray[4], currentDrugArray[5]);
         }
@@ -95,9 +102,19 @@ public class DrugBank {
         return currentDrug;
     }
 
+    //Base InOrderTraverse so it goes through the list and saves into a file
     public void InOrderTraverse(){
-        InOrderTraverse(root);
-        System.out.println("In order traversal complete");
+        InOrderTraverse(root); //Goes in order and saves into "" file
+
+        //Once all is saved it will "Try" to close the file. But if its gotten to this point then the file already exists and it has been found
+        try {
+            writeToFile.close();
+        }catch (IOException e){
+            System.out.println("Error 404");
+        }
+
+        //Confirmation message it has finished
+        System.out.println("In order traversal complete.");
     }
 
     //Will traverse through the tree and print each drugs info
@@ -106,19 +123,18 @@ public class DrugBank {
             return;
         }
 
+        //Go to the left drug node
         InOrderTraverse(drugNode.left);
+
+        //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
         try {
-            FileWriter writeToFile = new FileWriter("recourses//dockedApprovedSorted.tab");
-            writeToFile.write(drugNode.ReturnName());
-            writeToFile.write(drugNode.ReturnSMILES());
-            writeToFile.write(drugNode.ReturnDrugBankID());
-            writeToFile.write(drugNode.ReturnURL());
-            writeToFile.write(drugNode.ReturnGroup());
-            writeToFile.write(drugNode.ReturnScore());
-            writeToFile.close();
+            writeToFile.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
+            writeToFile.newLine();
         }catch (IOException e){
             System.out.println("Error 404");
         }
+
+        //Go to the right drug node
         InOrderTraverse(drugNode.right);
     }
 
@@ -168,12 +184,12 @@ public class DrugBank {
         int currentDrugID = DrugIDToInt(currentDrug);
         int searchDrugID = DrugIDToInt(drugIDToEliminate);
 
-        //If the drug ID that i'm serching is less than the current one then it will go left else if the ID of the search is greater than the current Drug then it will go to the right. else if both are null than it will find the next value and connect it the next one so that it deletes
+        //If the drug ID that I'm serching is less than the current one then it will go left else if the ID of the search is greater than the current Drug then it will go to the right. else if both are null than it will find the next value and connect it the next one so that it deletes
         if(searchDrugID < currentDrugID){
             return Delete(currentDrug.left, drugToEliminate, drugIDToEliminate);
         }else if(searchDrugID > currentDrugID){
             return Delete(currentDrug.right, drugToEliminate, drugIDToEliminate);
-        } else if(currentDrug.left != null && currentDrug.right !=null){
+        }else if(currentDrug.left != null && currentDrug.right !=null){
             currentDrug = FindMin(currentDrug.right);
             currentDrug.right = Delete(currentDrug.right, currentDrug, drugIDToEliminate);
         }
@@ -236,6 +252,6 @@ public class DrugBank {
             return currentDrug;
         }
 
-        return FindMin(currentDrug);
+        return FindMin(currentDrug.left);
     }
 }
