@@ -91,7 +91,7 @@ public class DrugHeap {
 
     }
 
-    public Drug DeleteMin(){
+    public Drug RemoveMin(){
         if(drugList.isEmpty()){
             throw new BufferUnderflowException();
         }
@@ -110,9 +110,30 @@ public class DrugHeap {
         for(; id * 2 <= currentSize; id = child){
             child = id * 2;
 
-            if(child != currentSize && heapDrugArray[child + 1]){
-
+            if(child != currentSize && heapDrugArray[child + 1].compareTo(heapDrugArray[child]) < 0){
+                child++;
             }
+            if(heapDrugArray[child].compareTo(tmp)<0){
+                heapDrugArray[id] = heapDrugArray[child];
+            }else{
+                break;
+            }
+        }
+        heapDrugArray[id] = tmp;
+    }
+
+    public DrugHeap(Drug[] items){
+        currentSize = items.length;
+        heapDrugArray = (Drug[]) new Comparable[ ( currentSize + 2 ) * 11 / 10 ];
+        int i = 1;
+        for(Drug item : items )
+            heapDrugArray[i++] = item;
+        BuildHeap();
+    }
+
+    public void BuildHeap(){
+        for(int i = currentSize/2; i > 0; i--){
+            PercolateDown(i);
         }
     }
 }
