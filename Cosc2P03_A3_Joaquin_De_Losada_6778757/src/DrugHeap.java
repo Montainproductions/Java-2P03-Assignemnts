@@ -1,5 +1,6 @@
 import java.io.*;
 import java.lang.Math;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 
 public class DrugHeap {
@@ -87,6 +88,31 @@ public class DrugHeap {
     }
 
     public void EnlargeArray(int newArraySize){
-        
+
+    }
+
+    public Drug DeleteMin(){
+        if(drugList.isEmpty()){
+            throw new BufferUnderflowException();
+        }
+
+        Drug minItem = FindMin();
+        heapDrugArray[1] = heapDrugArray[currentSize--];
+        PercolateDown(1);
+
+        return minItem;
+    }
+
+    public void PercolateDown(int id){
+        int child;
+        Drug tmp = heapDrugArray[id];
+
+        for(; id * 2 <= currentSize; id = child){
+            child = id * 2;
+
+            if(child != currentSize && heapDrugArray[child + 1]){
+
+            }
+        }
     }
 }
