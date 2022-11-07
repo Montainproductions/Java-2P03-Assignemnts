@@ -4,9 +4,10 @@ import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 
 public class DrugHeap {
-    File writeTo = new File("recourses//dockedApprovedSorted.tab");
+    File writeToInOrderTraverse = new File("recourses//sockedApprovedInOrder.tab");
+    File writeToHeapSorted = new File("recourses//dockedApprovedSorted.tab");
 
-    public BufferedWriter writeToFile;
+    public BufferedWriter writeFileInOrder, writeHeapSorted;
 
     public Drug root;
 
@@ -63,13 +64,20 @@ public class DrugHeap {
     //If the file called "Docked Approved Sorted" dosent exist it will create it or then nothing will happen. It will then set up the buffer writer so that it can later write to the file.
     public void CreateFile(){
         try {
-            if(writeTo.createNewFile()) {
-                System.out.println("File Created: " + writeTo.getName());
+            if(writeToInOrderTraverse.createNewFile()) {
+                System.out.println("File Created: " + writeToInOrderTraverse.getName());
             }else{
                 System.out.println("File exists.");
             }
 
-            writeToFile = new BufferedWriter(new PrintWriter(writeTo));
+            if(writeToHeapSorted.createNewFile()) {
+                System.out.println("File Created: " + writeToHeapSorted.getName());
+            }else{
+                System.out.println("File exists.");
+            }
+
+            writeFileInOrder = new BufferedWriter(new PrintWriter(writeToInOrderTraverse));
+            writeHeapSorted = new BufferedWriter(new PrintWriter(writeToHeapSorted));
         }catch(IOException e){
             System.out.println("Error 404");
         }
@@ -118,7 +126,7 @@ public class DrugHeap {
 
         //Once all is saved it will "Try" to close the file. But if its gotten to this point then the file already exists and it has been found
         try {
-            writeToFile.close();
+            writeFileInOrder.close();
         }catch (IOException e){
             System.out.println("Error 404");
         }
@@ -137,8 +145,8 @@ public class DrugHeap {
 
         //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
         try {
-            writeToFile.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
-            writeToFile.newLine();
+            writeFileInOrder.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
+            writeFileInOrder.newLine();
         }catch (IOException e){
             System.out.println("Error 404");
         }
