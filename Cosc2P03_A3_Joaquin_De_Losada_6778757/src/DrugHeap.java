@@ -87,8 +87,64 @@ public class DrugHeap {
         heapDrugArray[hole] = newDrug;
     }
 
+    public void BuildHeap(){
+        BuildHeap();
+    }
+
+    public void BuildHeap(Drug[] items){
+        currentSize = items.length;
+        heapDrugArray = (Drug[]) new Comparable[ ( currentSize + 2 ) * 11 / 10 ];
+        int i = 1;
+        for(Drug item : items) {
+            heapDrugArray[i++] = item;
+        }
+        for(int j = currentSize/2; j > 0; j--){
+            TrickleDown(j);
+        }
+    }
+
+    /*public void BuildHeap(){
+        for(int i = currentSize/2; i > 0; i--){
+            TrickleDown(i);
+        }
+    }*/
+
     public void EnlargeArray(int newArraySize){
 
+    }
+
+    public void InOrderTraverse(){
+        InOrderTraverse(root); //Goes in order and saves into "" file
+
+        //Once all is saved it will "Try" to close the file. But if its gotten to this point then the file already exists and it has been found
+        try {
+            writeToFile.close();
+        }catch (IOException e){
+            System.out.println("Error 404");
+        }
+
+        //Confirmation message it has finished
+        System.out.println("In order traversal complete.");
+    }
+
+    public void InOrderTraverse(Drug drugNode){
+        if(drugNode == null){
+            return;
+        }
+
+        //Go to the left drug node
+        InOrderTraverse(drugNode.left);
+
+        //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
+        try {
+            writeToFile.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
+            writeToFile.newLine();
+        }catch (IOException e){
+            System.out.println("Error 404");
+        }
+
+        //Go to the right drug node
+        InOrderTraverse(drugNode.right);
     }
 
     public Drug RemoveMin(){
@@ -98,42 +154,27 @@ public class DrugHeap {
 
         Drug minItem = FindMin();
         heapDrugArray[1] = heapDrugArray[currentSize--];
-        PercolateDown(1);
+        TrickleDown(1);
 
         return minItem;
     }
 
-    public void PercolateDown(int id){
+    public void TrickleDown(int id){
         int child;
         Drug tmp = heapDrugArray[id];
 
         for(; id * 2 <= currentSize; id = child){
             child = id * 2;
 
-            if(child != currentSize && heapDrugArray[child + 1].compareTo(heapDrugArray[child]) < 0){
+            if(child != currentSize && heapDrugArray[child + 1].ReturnDrugBankID().compareTo(heapDrugArray[child].ReturnDrugBankID()) < 0){
                 child++;
             }
-            if(heapDrugArray[child].compareTo(tmp)<0){
+            if(heapDrugArray[child].ReturnDrugBankID().compareTo(tmp.ReturnDrugBankID())<0){
                 heapDrugArray[id] = heapDrugArray[child];
             }else{
                 break;
             }
         }
         heapDrugArray[id] = tmp;
-    }
-
-    public DrugHeap(Drug[] items){
-        currentSize = items.length;
-        heapDrugArray = (Drug[]) new Comparable[ ( currentSize + 2 ) * 11 / 10 ];
-        int i = 1;
-        for(Drug item : items )
-            heapDrugArray[i++] = item;
-        BuildHeap();
-    }
-
-    public void BuildHeap(){
-        for(int i = currentSize/2; i > 0; i--){
-            PercolateDown(i);
-        }
     }
 }

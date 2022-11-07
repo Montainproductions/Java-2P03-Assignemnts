@@ -5,13 +5,8 @@ public class Main {
         DrugHeap db = new DrugHeap();
 
         db.ReadData();
-        db.Create(db.ReturnDrugArray());
+        db.BuildHeap();
         db.InOrderTraverse();
-        db.Depth1("DB01050");
-        db.Depth2();
-        db.Search("DB01050");
-        db.Search("DB00316");
-        db.Delete("DB01050");
-        System.out.println("Hello world!");
+        db.HeapSort();
     }
 }
