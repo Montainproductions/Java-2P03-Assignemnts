@@ -93,13 +93,17 @@ public class DrugHeap {
             heapDrugArray[hole] = heapDrugArray[hole/2];
         }
         heapDrugArray[hole] = newDrug;
+    }
+
+    public void EnlargeArray(int newArraySize){
+
     }*/
 
     public void BuildHeap(){
         BuildHeap(drugArray);
     }
 
-    public void BuildHeap(Drug[] items){
+    /*public void BuildHeap(Drug[] items){
         currentSize = items.length;
         heapDrugArray = (Drug[]) new Comparable[(currentSize + 2) * 11/10]; //Seems to not be able to implicitly imply to a drug array
         int i = 1;
@@ -110,16 +114,45 @@ public class DrugHeap {
             TrickleDown(j);
         }
         System.out.println("Heap built.");
-    }
-
-    /*public void BuildHeap(){
-        for(int i = currentSize/2; i > 0; i--){
-            TrickleDown(i);
-        }
     }*/
 
-    public void EnlargeArray(int newArraySize){
+    public void MoveLeafs(Drug[] items, int i){
+        int root = i; // Initialize largest as root
+        int l = 2 * i + 1; // left = 2*i + 1
+        int r = 2 * i + 2; // right = 2*i + 2
 
+        //If right child is larger than the current heap then make that the new root
+        if (l < currentSize && DrugIDToInt(items[l].ReturnDrugBankID()) > DrugIDToInt(items[root].ReturnDrugBankID())) {
+            root = l;
+        }
+
+        //If right child is larger than the current heap then make that the new root
+        if (r < currentSize && DrugIDToInt(items[r].ReturnDrugBankID()) > DrugIDToInt(items[root].ReturnDrugBankID())) {
+            root = r;
+        }
+
+        //If largest is not root change the root and fix the related heaps
+        if (root != i) {
+            Drug swap = items[i];
+            items[i] = items[root];
+            items[root] = swap;
+
+            //Recursively fix the heap array
+            MoveLeafs(items, root);
+        }
+    }
+
+    //Function to build a Max-Heap from the Array
+    public void BuildHeap(Drug[] items){
+        currentSize = items.length;
+        //Start from the bottom of the leaf
+        int startIdx = (currentSize / 2) - 1;
+
+        //Start from the bottom and make sure it has the correct corisponding values else move them around in the heap
+        for (int i = startIdx; i >= 0; i--) {
+            MoveLeafs(items, i);
+        }
+        System.out.println("Heap built");
     }
 
     public void InOrderTraverse(){
@@ -185,5 +218,18 @@ public class DrugHeap {
             }
         }
         heapDrugArray[id] = tmp;
+    }
+
+    public int DrugIDToInt(String drugID){
+        String[] drugIDString = drugID.split("B");
+
+        return Integer.parseInt(drugIDString[1]);
+    }
+
+    //Grab the ID from the drug
+    public int DrugIDToInt(Drug drug){
+        String[] drugIDString = drug.ReturnDrugBankID().split("B");
+
+        return Integer.parseInt(drugIDString[1]);
     }
 }
