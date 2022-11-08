@@ -12,9 +12,8 @@ public class DrugHeap {
     public Drug root;
 
     public ArrayList<String> drugList = new ArrayList<>();
-    public Drug[] drugArray;
+    public Drug[] drugArray, heapDrugArray;
 
-    public Drug[] heapDrugArray;
     public int currentSize;
 
     //Will read the data from the file and place it in a array list
@@ -41,16 +40,17 @@ public class DrugHeap {
                     drugList.add(line);
                 }
             }
+            System.out.println(totalArrayLength);
             drugArray = new Drug[totalArrayLength]; //Create the array of ADT of drug of the size of patients
             drugList.forEach((i) ->{ //Go through each arraylist of drug string to split the string up and add it to a drug data type
                 String[] currentPatient = i.split("\\t"); //Spliting the drug into an array
                 Drug newDrug = new Drug(); //Create a drug data type
                 newDrug.SetGenericName(currentPatient[0]); //Set the drug name
-                newDrug.SetSmiles(currentPatient[2]); //Set the drug smiles
-                newDrug.SetDrugBankID(currentPatient[3]); //Set the drug ID
-                newDrug.SetURL(currentPatient[4]); //Set the drug URL
-                newDrug.SetDrugGroup(currentPatient[5]); //Set the drugs group
-                newDrug.SetScore(currentPatient[6]); //Set the drugs score
+                newDrug.SetSmiles(currentPatient[1]); //Set the drug smiles
+                newDrug.SetDrugBankID(currentPatient[2]); //Set the drug ID
+                newDrug.SetURL(currentPatient[3]); //Set the drug URL
+                newDrug.SetDrugGroup(currentPatient[4]); //Set the drugs group
+                newDrug.SetScore(currentPatient[5]); //Set the drugs score
                 drugArray[drugList.indexOf(i)] = newDrug; //Add the drug to the array of drugs
             });
         } catch (IOException e) { //If the file isnt found then print this
@@ -83,7 +83,7 @@ public class DrugHeap {
         }
     }
 
-    public void Insert(Drug newDrug){
+    /*public void Insert(Drug newDrug){
         if(currentSize == heapDrugArray.length - 1){
             EnlargeArray(heapDrugArray.length * 2 + 1);
         }
@@ -93,15 +93,15 @@ public class DrugHeap {
             heapDrugArray[hole] = heapDrugArray[hole/2];
         }
         heapDrugArray[hole] = newDrug;
-    }
+    }*/
 
     public void BuildHeap(){
-        BuildHeap();
+        BuildHeap(drugArray);
     }
 
     public void BuildHeap(Drug[] items){
         currentSize = items.length;
-        heapDrugArray = (Drug[]) new Comparable[ ( currentSize + 2 ) * 11 / 10 ];
+        heapDrugArray = (Drug[]) new Comparable[(currentSize + 2) * 11/10]; //Seems to not be able to implicitly imply to a drug array
         int i = 1;
         for(Drug item : items) {
             heapDrugArray[i++] = item;
@@ -109,6 +109,7 @@ public class DrugHeap {
         for(int j = currentSize/2; j > 0; j--){
             TrickleDown(j);
         }
+        System.out.println("Heap built.");
     }
 
     /*public void BuildHeap(){
@@ -155,7 +156,7 @@ public class DrugHeap {
         InOrderTraverse(drugNode.right);
     }
 
-    public Drug RemoveMin(){
+    /*public Drug RemoveMin(){
         if(drugList.isEmpty()){
             throw new BufferUnderflowException();
         }
@@ -165,7 +166,7 @@ public class DrugHeap {
         TrickleDown(1);
 
         return minItem;
-    }
+    }*/
 
     public void TrickleDown(int id){
         int child;
