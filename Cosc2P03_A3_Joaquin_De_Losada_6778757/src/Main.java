@@ -6,7 +6,7 @@ public class Main {
 
         db.ReadData();
         db.BuildHeap();
-        db.InOrderTraverse();
+        //db.InOrderTraverse();
         //db.HeapSort();
     }
 }

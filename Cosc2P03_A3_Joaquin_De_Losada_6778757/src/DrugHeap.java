@@ -82,6 +82,40 @@ public class DrugHeap {
         }
     }
 
+    //The method that starts the recursion of inserting the drugs into the tree
+    public void Insert(int arrayValue){
+        root = Insert(root, drugList.get(arrayValue));
+    }
+
+    //Will insert the drug in the closest apropiate position
+    public Drug Insert(Drug currentDrug, String newDrugString){
+        String[] currentDrugArray = newDrugString.split("\\t"); //Spliting the string into an array on the tabs
+
+        //Create a new Drug in the null position with all of its info.
+        if(currentDrug == null){
+            return new Drug(currentDrugArray[0], currentDrugArray[1], currentDrugArray[2], currentDrugArray[3], currentDrugArray[4], currentDrugArray[5]);
+        }
+
+        //System.out.println(currentDrug.drugBankID);
+
+        //Turn the string of the int value to check position
+        int newDrugID = DrugIDToInt(currentDrugArray[2]);
+
+        //Grab the ID of the current Drug
+        int currentDrugID = DrugIDToInt(currentDrug);
+
+        //If the drug id is less than the current drug ID then go to the left else if it's greater than go to the right. If it's the same value then just return the value
+        if(newDrugID < currentDrugID){
+            currentDrug.left = Insert(currentDrug.left, newDrugString);
+        } else if(newDrugID > currentDrugID){
+            currentDrug.right = Insert(currentDrug.right, newDrugString);
+        }else{
+            return currentDrug;
+        }
+
+        return currentDrug;
+    }
+
     /*public void Insert(Drug newDrug){
         if(currentSize == heapDrugArray.length - 1){
             EnlargeArray(heapDrugArray.length * 2 + 1);
@@ -99,10 +133,13 @@ public class DrugHeap {
     }*/
 
     public void BuildHeap(){
-        for(int i = drugArray.length/2; i > 0; i--){
-            TrickleDown(1);
+        for(int i = drugArray.length; i > 0; i--){
+            Insert(i);
         }
 
+        for(int i = drugArray.length/2; i > 0; i--){
+            TrickleDown(i);
+        }
         System.out.println("Building Heap done");
     }
 
@@ -215,5 +252,30 @@ public class DrugHeap {
 
     public int LeftChild(int i){
         return 2 * i + 1;
+    }
+
+    //Turn a string into an int ID
+    public int DrugIDToInt(String drugID){
+        String[] drugIDString = drugID.split("B");
+
+        return Integer.parseInt(drugIDString[1]);
+    }
+
+    //Grab the ID from the drug
+    public int DrugIDToInt(Drug drug){
+        String[] drugIDString = drug.ReturnDrugBankID().split("B");
+
+        return Integer.parseInt(drugIDString[1]);
+    }
+
+    //Find the lowest value of current subtree (last .left)
+    public Drug FindMin(Drug currentDrug){
+        if(currentDrug == null){
+            return null;
+        }else if(currentDrug.left == null){
+            return currentDrug;
+        }
+
+        return FindMin(currentDrug.left);
     }
 }
