@@ -4,6 +4,8 @@ import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 
 public class DrugHeap {
+    int currentSize; //Counter used to create the patients array.
+
     File writeToInOrderTraverse = new File("recourses//sockedApprovedInOrder.tab");
     File writeToHeapSorted = new File("recourses//dockedApprovedSorted.tab");
 
@@ -13,15 +15,15 @@ public class DrugHeap {
 
     public ArrayList<String> drugList = new ArrayList<>();
 
-    public Drug[] drugArray;
+    public Drug[] drugArray, buildHeapArray, heapSorted;
 
 
     //Will read the data from the file and place it in a array list
     public void ReadData() {
         File txtFile = new File("recourses//dockedApproved.tab"); //Gets the file
         BufferedReader readFile;
-        int totalArrayLength = 0; //Counter used to create the patients array.
 
+        int totalArrayLength = 0;
 
         try{ //Try this code
             readFile = new BufferedReader(new FileReader(txtFile)); //Read file
@@ -133,13 +135,25 @@ public class DrugHeap {
     }*/
 
     public void BuildHeap(){
-        for(int i = drugArray.length; i > 0; i--){
-            Insert(i);
+        BuildHeap(drugArray);
+    }
+
+    public void BuildHeap(Drug[] items){
+        currentSize = items.length;
+        buildHeapArray = new Drug[(currentSize + 2) * 11/10];
+
+        int i = 1;
+        for(Drug item : items){
+            buildHeapArray[i++] = item;
         }
 
-        for(int i = drugArray.length/2; i > 0; i--){
-            TrickleDown(i);
+
+        for(int j = currentSize/2; j > 0; j--){
+            TrickleDown(j);
         }
+
+        root = buildHeapArray[1];
+
         System.out.println("Building Heap done");
     }
 
@@ -156,7 +170,7 @@ public class DrugHeap {
     }*/
 
     public void InOrderTraverse(){
-        InOrderTraverse(root); //Goes in order and saves into "" file
+        InOrderTraverse(root, 1); //Goes in order and saves into "" file
 
         //Once all is saved it will "Try" to close the file. But if its gotten to this point then the file already exists and it has been found
         try {
@@ -169,24 +183,37 @@ public class DrugHeap {
         System.out.println("In order traversal complete.");
     }
 
-    public void InOrderTraverse(Drug drugNode){
+    public void InOrderTraverse(Drug drugNode, int i){
+        int child = 0;
         if(drugNode == null){
             return;
         }
 
-        //Go to the left drug node
-        InOrderTraverse(drugNode.left);
-        System.out.println("Hello");
-        //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
-        try {
-            writeFileInOrder.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
-            writeFileInOrder.newLine();
-        }catch (IOException e){
-            System.out.println("Error 404");
+        /*for(int j = currentSize/2; j > 0; j--){
+            System.out.println(buildHeapArray[child]);
+
+            //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
+            try {
+                writeFileInOrder.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
+                writeFileInOrder.newLine();
+            }catch (IOException e){
+                System.out.println("Error 404");
+            }
         }
 
-        //Go to the right drug node
-        InOrderTraverse(drugNode.right);
+        for( ; i * 2 <= currentSize; i = child){
+            child = i * 2;
+            System.out.println(buildHeapArray[child]);
+
+            //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
+            try {
+                writeFileInOrder.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
+                writeFileInOrder.newLine();
+            }catch (IOException e){
+                System.out.println("Error 404");
+            }
+        }*/
+        System.out.println("Finished InOrder");
     }
 
 
@@ -213,20 +240,22 @@ public class DrugHeap {
 
     private void TrickleDown( int hole ){
         int child;
-        Drug tmp = drugArray[hole];
-        for( ; hole * 2 <= drugArray.length; hole = child ) {
+        Drug tmp = buildHeapArray[hole];
+
+        for( ; hole * 2 <= currentSize; hole = child ) {
             child = hole * 2;
-            if (child != drugArray.length && drugArray[child + 1].ReturnDrugBankID().compareTo(drugArray[child].ReturnDrugBankID()) < 0) {
+            if (child != currentSize && buildHeapArray[child + 1].ReturnDrugBankID().compareTo(buildHeapArray[child].ReturnDrugBankID()) < 0) {
                 child++;
             }
 
-            if (drugArray[child].ReturnDrugBankID().compareTo(tmp.ReturnDrugBankID()) < 0){
-                drugArray[hole] = drugArray[child];
+            if (buildHeapArray[child].ReturnDrugBankID().compareTo(tmp.ReturnDrugBankID()) < 0){
+                buildHeapArray[hole] = buildHeapArray[child];
             }else{
                 break;
             }
         }
-        drugArray[ hole ] = tmp;
+        buildHeapArray[ hole ] = tmp;
+        //System.out.println(buildHeapArray[hole].ReturnDrugBankID());
     }
 
     public Drug TrickleDown(Drug[] heapDrug,int i, int n){
