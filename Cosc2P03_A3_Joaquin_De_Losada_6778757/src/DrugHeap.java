@@ -84,93 +84,50 @@ public class DrugHeap {
         }
     }
 
-    //The method that starts the recursion of inserting the drugs into the tree
-    public void Insert(int arrayValue){
-        root = Insert(root, drugList.get(arrayValue));
-    }
-
-    //Will insert the drug in the closest apropiate position
-    public Drug Insert(Drug currentDrug, String newDrugString){
-        String[] currentDrugArray = newDrugString.split("\\t"); //Spliting the string into an array on the tabs
-
-        //Create a new Drug in the null position with all of its info.
-        if(currentDrug == null){
-            return new Drug(currentDrugArray[0], currentDrugArray[1], currentDrugArray[2], currentDrugArray[3], currentDrugArray[4], currentDrugArray[5]);
-        }
-
-        //System.out.println(currentDrug.drugBankID);
-
-        //Turn the string of the int value to check position
-        int newDrugID = DrugIDToInt(currentDrugArray[2]);
-
-        //Grab the ID of the current Drug
-        int currentDrugID = DrugIDToInt(currentDrug);
-
-        //If the drug id is less than the current drug ID then go to the left else if it's greater than go to the right. If it's the same value then just return the value
-        if(newDrugID < currentDrugID){
-            currentDrug.left = Insert(currentDrug.left, newDrugString);
-        } else if(newDrugID > currentDrugID){
-            currentDrug.right = Insert(currentDrug.right, newDrugString);
-        }else{
-            return currentDrug;
-        }
-
-        return currentDrug;
-    }
-
-    /*public void Insert(Drug newDrug){
-        if(currentSize == heapDrugArray.length - 1){
-            EnlargeArray(heapDrugArray.length * 2 + 1);
-        }
-
-        int hole = ++currentSize;
-        for(heapDrugArray[0] = newDrug; newDrug.compareTo(heapDrugArray[hole/2])<0; hole/= 2){
-            heapDrugArray[hole] = heapDrugArray[hole/2];
-        }
-        heapDrugArray[hole] = newDrug;
-    }
-
-    public void EnlargeArray(int newArraySize){
-
-    }*/
-
+    //Initilizes the build heap method
     public void BuildHeap(){
         BuildHeap(drugArray);
     }
 
+    //Builds basic array
     public void BuildHeap(Drug[] items){
         currentSize = items.length;
-        buildHeapArray = new Drug[(currentSize + 2) * 11/10];
+        buildHeapArray = new Drug[(currentSize + 2) * 11/10]; //Makes new heap array size
 
+        //Places the array to the correct position in the new heap array
         int i = 1;
         for(Drug item : items){
             buildHeapArray[i++] = item;
         }
 
 
+        //Will "Fix" the heap array
         for(int j = currentSize/2; j > 0; j--){
             TrickleDown(j);
         }
 
-        root = buildHeapArray[1];
+        root = buildHeapArray[1]; //Sets the root
 
         System.out.println("Building Heap done");
     }
 
-    /*public Drug RemoveMin(){
+    //Will remove min from the heap array
+    public Drug RemoveMin(){
         if(drugList.isEmpty()){
             throw new BufferUnderflowException();
         }
 
-        Drug minItem = FindMin();
-        heapDrugArray[1] = heapDrugArray[currentSize--];
-        TrickleDown(1);
+        Drug minItem = FindMin(1); //Will find the position in the array and fix
+        buildHeapArray[1] = buildHeapArray[currentSize--];
+        TrickleDown(1); //Will fix the array
 
         return minItem;
-    }*/
+    }
 
+    //Initises the in order recurssion function
     public void InOrderTraverse(){
-        InOrderTraverse(root, 1); //Goes in order and saves into "" file
+        System.out.println(buildHeapArray.length);
+        InOrderTraverse(1); //Goes in order and saves into In order file
 
         //Once all is saved it will "Try" to close the file. But if its gotten to this point then the file already exists and it has been found
         try {
@@ -183,61 +140,100 @@ public class DrugHeap {
         System.out.println("In order traversal complete.");
     }
 
-    public void InOrderTraverse(Drug drugNode, int i){
-        int child = 0;
-        if(drugNode == null){
+    //Will traverse in order through  the array main recurssion
+    public void InOrderTraverse(int i){
+        //Once it has reached to bottom then will return to the previouse drug
+        if(i >= buildHeapArray.length){
             return;
         }
 
-        /*for(int j = currentSize/2; j > 0; j--){
-            System.out.println(buildHeapArray[child]);
+        //System.out.println(i);
+        //System.out.println(buildHeapArray.length);
 
-            //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
-            try {
-                writeFileInOrder.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
-                writeFileInOrder.newLine();
-            }catch (IOException e){
-                System.out.println("Error 404");
+        //Will go to the left child
+        if(i*2 < buildHeapArray.length) {
+            if (buildHeapArray[i * 2] != null && (i * 2) <= buildHeapArray.length) {
+                InOrderTraverse(i * 2);
             }
         }
 
-        for( ; i * 2 <= currentSize; i = child){
-            child = i * 2;
-            System.out.println(buildHeapArray[child]);
+        //Will save to correct file
+        try {
+            writeFileInOrder.write(buildHeapArray[i].ReturnName() + " " + buildHeapArray[i].ReturnSMILES() + " " + buildHeapArray[i].ReturnDrugBankID() + " " + buildHeapArray[i].ReturnURL() + " " + buildHeapArray[i].ReturnGroup() + " " + buildHeapArray[i].ReturnScore() + System.getProperty("line.separator"));
+            writeFileInOrder.newLine();
+        }catch (IOException e){
+            System.out.println("Error 404");
+        }
 
-            //Will write all the drug info to the file and then go to the next file. Unless the file dosent exist or cant write more
-            try {
-                writeFileInOrder.write(drugNode.ReturnName() + " " + drugNode.ReturnSMILES() + " " + drugNode.ReturnDrugBankID() + " " + drugNode.ReturnURL() + " " + drugNode.ReturnGroup() + " " + drugNode.ReturnScore() + System.getProperty("line.separator"));
-                writeFileInOrder.newLine();
-            }catch (IOException e){
-                System.out.println("Error 404");
+        //Go to the "right" drug
+        if(i*2+1 < buildHeapArray.length) {
+            if (buildHeapArray[i * 2 + 1] != null) {
+                InOrderTraverse(i * 2 + 1);
             }
-        }*/
-        System.out.println("Finished InOrder");
+        }
+
+        //System.out.println("Finished InOrder");
     }
 
-
+    //Will sort the heap and save it to the file
     public void HeapSort(){
-        BuildHeap();
-        for(int i = drugArray.length/2-1; i >= 0; i--){
-            Drug newDrug = TrickleDown(drugArray, 0, i);
-            try {
-                writeHeapSorted.write(newDrug.ReturnName() + " " + newDrug.ReturnSMILES() + " " + newDrug.ReturnDrugBankID() + " " + newDrug.ReturnURL() + " " + newDrug.ReturnGroup() + " " + newDrug.ReturnScore() + System.getProperty("line.separator"));
-                writeHeapSorted.newLine();
-            }catch (IOException e){
-                System.out.println("Error 404");
-            }
-        }
+        heapSorted = buildHeapArray;
+        HeapSort(heapSorted);
+        HeapSortPrint(1);
 
+        //Close the file so that it cant be written again
         try {
             writeHeapSorted.close();
         }catch (IOException e){
             System.out.println("Error 404");
         }
 
+        //Output that it was finished
         System.out.println("Heap sorted");
     }
 
+    //Will sort correctly the array from what i understand
+    public void HeapSort(Drug[] a){
+
+        /* BuildsHeap */
+        for( int i = a.length / 2 - 1; i >= 0; i-- ) {
+            TrickleDown(a, i, a.length);
+        }
+        for(int i = a.length - 1; i > 0; i--){
+            TrickleDown(a, 0, i);
+        }
+    }
+
+    //Will save the sorted Heap into the dockedApprovedSorted.tab file
+    public void HeapSortPrint(int i){
+        if(heapSorted[i] == null){
+            return;
+        }
+
+        //write to file
+        try {
+            writeHeapSorted.write(heapSorted[i].ReturnName() + " " + heapSorted[i].ReturnSMILES() + " " + heapSorted[i].ReturnDrugBankID() + " " + heapSorted[i].ReturnURL() + " " + heapSorted[i].ReturnGroup() + " " + heapSorted[i].ReturnScore() + System.getProperty("line.separator"));
+            writeHeapSorted.newLine();
+        }catch (IOException e){
+            System.out.println("Error 404");
+        }
+
+        //Go to the "left" drug
+        if(i*2 < buildHeapArray.length) {
+            if (buildHeapArray[i * 2] != null && (i * 2) <= buildHeapArray.length) {
+                HeapSortPrint(i * 2);
+            }
+        }
+
+        //Go to the "right" drug
+        if(i*2+1 < buildHeapArray.length) {
+            if (buildHeapArray[i * 2 + 1] != null) {
+                HeapSortPrint(i * 2 + 1);
+            }
+        }
+    }
+
+    //Will trickle down a drug to its correct position Used in the heap build method
     private void TrickleDown( int hole ){
         int child;
         Drug tmp = buildHeapArray[hole];
@@ -258,17 +254,28 @@ public class DrugHeap {
         //System.out.println(buildHeapArray[hole].ReturnDrugBankID());
     }
 
-    public Drug TrickleDown(Drug[] heapDrug,int i, int n){
+    //Will trickle down a drug to its correct position. Used in the heapsort method
+    public void TrickleDown(Drug[] heapDrug,int i, int n){
         int child;
         Drug tmp;
 
         for(tmp = heapDrug[i]; LeftChild(i) < n; i = child){
             child = LeftChild(i);
 
-            if(child != n - 1 && heapDrug[child].ReturnDrugBankID().compareTo(heapDrug[child + 1].ReturnDrugBankID()) < 0) {
+            if(heapDrug[child] == null) return;
+            if(tmp == null) return;
+
+            String heapChildInt1 = heapDrug[child].ReturnDrugBankID();
+            String heapChildInt2 = heapDrug[child + 1].ReturnDrugBankID();
+
+            if(child != n - 1 && heapChildInt1.compareTo(heapChildInt2) < 0) {
                 child++;
             }
-            if(tmp.ReturnDrugBankID().compareTo(heapDrug[child].ReturnDrugBankID()) < 0){
+
+            String heapReturnTmpID = tmp.ReturnDrugBankID();
+            String heapChildIntUpdt = heapDrug[child].ReturnDrugBankID();
+
+            if(heapReturnTmpID.compareTo(heapChildIntUpdt) < 0){
                 heapDrug[i] = heapDrug[child];
             }else{
                 break;
@@ -276,9 +283,10 @@ public class DrugHeap {
         }
         heapDrug[i] = tmp;
         //System.out.println(heapDrug[i].ReturnDrugBankID());
-        return heapDrug[i];
+        //return heapDrug[i];
     }
 
+    //Will go to the left child of the current drug
     public int LeftChild(int i){
         return 2 * i + 1;
     }
@@ -297,14 +305,17 @@ public class DrugHeap {
         return Integer.parseInt(drugIDString[1]);
     }
 
-    //Find the lowest value of current subtree (last .left)
-    public Drug FindMin(Drug currentDrug){
-        if(currentDrug == null){
+    //Find the lowest value of current array in theory
+    public Drug FindMin(int i){
+        if(buildHeapArray[i] == null){
             return null;
-        }else if(currentDrug.left == null){
-            return currentDrug;
         }
 
-        return FindMin(currentDrug.left);
+        if(buildHeapArray[i].ReturnDrugBankID().compareTo(buildHeapArray[i * 2].ReturnDrugBankID()) < 0){
+            FindMin(i*2);
+        }else if(buildHeapArray[i].ReturnDrugBankID().compareTo(buildHeapArray[i * 2 + 1].ReturnDrugBankID()) < 0){
+            FindMin(i * 2 + 1);
+        }
+        return buildHeapArray[i];
     }
 }
