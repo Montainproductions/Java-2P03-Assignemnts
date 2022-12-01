@@ -19,7 +19,6 @@ public class DrugGraph {
     public void ReadData() {
         LoadMainData();
         System.out.println("Loaded Drugs/Vectors");
-        LoadSIMMAT();
         System.out.println("Loaded SIMMAT file and created box Weighted and Unweighted matrix");
 
         //Runs the method for creating a method and allowing java to later write to said method
@@ -49,6 +48,8 @@ public class DrugGraph {
                     vertexList.add(line);
                 }
             }
+            w = new float[totalArrayLength][totalArrayLength]; //Create the array of ADT of drug of the size of patients
+            a = new int[totalArrayLength][totalArrayLength];
             vertices = new Vertex[totalArrayLength]; //Create the array of ADT of drug of the size of patients
             vertexList.forEach((i) ->{ //Go through each arraylist of drug string to split the string up and add it to a drug data type
                 String[] currentPatient = i.split("\\t"); //Spliting the drug into an array
@@ -61,39 +62,9 @@ public class DrugGraph {
                 newVertex.SetScore(currentPatient[5]); //Set the drugs score
                 newVertex.SetVisitied(false);
                 vertices[vertexList.indexOf(i)] = newVertex; //Add the drug to the array of drugs
-            });
-        } catch (IOException e) { //If the file isnt found then print this
-            System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
-        }
-    }
 
-    public void LoadSIMMAT(){
-        File txtFile = new File("recourses//sim_mat.tab"); //Gets the file
-        BufferedReader readFile;
-        int row = 0;
-
-        try{ //Try this code
-            readFile = new BufferedReader(new FileReader(txtFile)); //Read file
-            //Scanner scanner = new Scanner(new BufferedReader(new FileReader(txtFile))); //Read file
-
-            String line = ""; //String that will contain each line
-            //ArrayList<String> drugList = new ArrayList<>();
-            //System.out.println(readFile);
-            while (line != null) { //Loop through the txt file
-                line = readFile.readLine(); //Read the line
-                if (line == null) {
-                    break;
-                } //If the current line is null it will stop reading
-                row++;
-                //System.out.println(line);
-                similaritiesList.add(line);
-            }
-            w = new float[row][row]; //Create the array of ADT of drug of the size of patients
-            a = new int[row][row];
-            similaritiesList.forEach((i) ->{ //Go through each arraylist of drug string to split the string up and add it to a drug data type
-                String[] currentPatient = i.split("\\t"); //Spliting the drug into an array
                 for(int j = 0; j < currentPatient.length; j++){
-                    int x = similaritiesList.indexOf(i);
+                    int x = vertexList.indexOf(i);
                     //System.out.println(currentPatient[x]);
 
                     float currentVal = Float.parseFloat(currentPatient[j]);
@@ -106,7 +77,6 @@ public class DrugGraph {
                         w[x][j] = (float)(1.0/0.0);
                     }
                 }
-                //System.out.println("Next Line: " + i);
             });
         } catch (IOException e) { //If the file isnt found then print this
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
@@ -127,11 +97,25 @@ public class DrugGraph {
         }
     }
 
+    public void FindModules(){
+        int moduleGroup = 0; //How do I know when to increase
+        for(int x = 0; x < a.length; x++){
+            for(int y = 0; y < a.length; y++){
+
+                if(a[x][y] == 1){
+
+                    BFS(DrugIDToInt(vertices[y].ReturnDrugBankID()));
+                    //BFS(vertices[y], moduleGroup);
+                }
+            }
+        }
+    }
+
     public void BFS(int i){
 
     }
 
-    /*public void BFS(Vertex s){
+    /*public void BFS(Vertex s, int moduleGroup){
         s.dist = 0;
         queue.enqueue(s);
         while queue is not empty{

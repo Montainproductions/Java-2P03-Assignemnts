@@ -1,6 +1,8 @@
 public class Vertex {
     public String genericName, sMILES, drugBankID, url, drugGroups, score, path;
 
+    public int moduleGroup;
+
     public float dist;
 
     public boolean wasVisited;
