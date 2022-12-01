@@ -2,6 +2,7 @@ import java.io.*;
 import java.lang.Math;
 import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class DrugGraph {
@@ -9,14 +10,17 @@ public class DrugGraph {
     public ArrayList<String> similaritiesList = new ArrayList<>();
     public Vertex[] vertices;
 
-    public int[][] w,a;
+    public float[][] w;
+    public int[][] a;
 
     File writeToInOrderTraverse = new File("recourses//MSTPrimResult.txt");
     public BufferedWriter writeFileInOrder;
 
     public void ReadData() {
         LoadMainData();
+        System.out.println("Loaded Drugs/Vectors");
         LoadSIMMAT();
+        System.out.println("Loaded SIMMAT file and created box Weighted and Unweighted matrix");
 
         //Runs the method for creating a method and allowing java to later write to said method
         CreateFile();
@@ -55,6 +59,7 @@ public class DrugGraph {
                 newVertex.SetURL(currentPatient[3]); //Set the drug URL
                 newVertex.SetDrugGroup(currentPatient[4]); //Set the drugs group
                 newVertex.SetScore(currentPatient[5]); //Set the drugs score
+                newVertex.SetVisitied(false);
                 vertices[vertexList.indexOf(i)] = newVertex; //Add the drug to the array of drugs
             });
         } catch (IOException e) { //If the file isnt found then print this
@@ -79,22 +84,82 @@ public class DrugGraph {
                 if (line == null) {
                     break;
                 } //If the current line is null it will stop reading
-                if (line.contains("Generic Name")) {} //If the line ever contains name then it will do nothing. This is used for the first line of the txt which dosent contain a patient
-                else { //Will add to the current patients list and increase size of patients array for later
-                    row++;
-                    similaritiesList.add(line);
-                }
+                row++;
+                //System.out.println(line);
+                similaritiesList.add(line);
             }
-            w = new int[row][row]; //Create the array of ADT of drug of the size of patients
+            w = new float[row][row]; //Create the array of ADT of drug of the size of patients
+            a = new int[row][row];
             similaritiesList.forEach((i) ->{ //Go through each arraylist of drug string to split the string up and add it to a drug data type
                 String[] currentPatient = i.split("\\t"); //Spliting the drug into an array
                 for(int j = 0; j < currentPatient.length; j++){
-                    //w[i][j] = currentPatient[j];
+                    int x = similaritiesList.indexOf(i);
+                    //System.out.println(currentPatient[x]);
+
+                    float currentVal = Float.parseFloat(currentPatient[j]);
+                    float WeightedValv = (1 - currentVal);
+
+                    if(WeightedValv <= 0.7){
+                        //System.out.println("Connected Graph");
+                        w[x][j] = WeightedValv;
+                    }else{
+                        w[x][j] = (float)(1.0/0.0);
+                    }
                 }
+                //System.out.println("Next Line: " + i);
             });
         } catch (IOException e) { //If the file isnt found then print this
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         }
+
+        UnWeightedMatrix();
+    }
+
+    public void UnWeightedMatrix(){
+        for(int x = 0; x < w.length; x++){
+            for(int y = 0; y < w.length; y++){
+                if(w[x][y] <= 0.7){
+                    a[x][y] = 1;
+                }else{
+                    a[x][y] = 0;
+                }
+            }
+        }
+    }
+
+    public void BFS(int i){
+
+    }
+
+    /*public void BFS(Vertex s){
+        s.dist = 0;
+        Q.enqueue(s);
+        while Q is not empty{
+            v = Q.dequeue();
+            v.known = true;
+            for each vertex w adjacent to v{
+                if(w.dist > v.dist+1)// we can improve w.dist by going through v to w
+                {
+                    w.dist = v.dist + 1;
+                    w.path = v;
+                    Q.enqueue(w);
+                }
+            }
+        }
+    }*/
+
+    //Turn a string into an int ID
+    public int DrugIDToInt(String drugID){
+        String[] drugIDString = drugID.split("B");
+
+        return Integer.parseInt(drugIDString[1]);
+    }
+
+    //Grab the ID from the drug
+    public int DrugIDToInt(Vertex vertex){
+        String[] drugIDString = vertex.ReturnDrugBankID().split("B");
+
+        return Integer.parseInt(drugIDString[1]);
     }
 
     public void CreateFile(){
@@ -110,5 +175,4 @@ public class DrugGraph {
             System.out.println("Error 404");
         }
     }
-
 }

@@ -7,6 +7,5 @@ public class Main {
         //dg.findShorestPath(’DB01050’, ’DB00316’, ’unweighted’);
         //dg.findShorestPath(’DB01050’, ’DB00316’, ’weighted’);
         //dg.MSTPrim();
-
     }
 }

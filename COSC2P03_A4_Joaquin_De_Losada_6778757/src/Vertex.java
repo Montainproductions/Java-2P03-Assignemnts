@@ -1,11 +1,15 @@
 public class Vertex {
-    public String genericName, sMILES, drugBankID, url, drugGroups, score, wasVisited, dist, path;
+    public String genericName, sMILES, drugBankID, url, drugGroups, score, path;
+
+    public float dist;
+
+    public boolean wasVisited;
 
     public Vertex(){
 
     }
 
-    public Vertex(String GenericName, String SMILES, String DrugBankID, String URL, String DrugGroup, String Score, String WasVisited, String Dist, String Path){
+    public Vertex(String GenericName, String SMILES, String DrugBankID, String URL, String DrugGroup, String Score, boolean WasVisited, float Dist, String Path){
         SetGenericName(GenericName);
         SetSmiles(SMILES);
         SetDrugBankID(DrugBankID);
@@ -29,9 +33,9 @@ public class Vertex {
 
     public void SetScore(String score){this.score = score;}
 
-    public void SetVisitied(String wasVisited){this.wasVisited = wasVisited;}
+    public void SetVisitied(boolean wasVisited){this.wasVisited = wasVisited;}
 
-    public void SetDist(String dist){this.dist = dist;}
+    public void SetDist(float dist){this.dist = dist;}
 
     public void SetPath(String path){this.path = path;}
 
@@ -60,9 +64,9 @@ public class Vertex {
 
     public String ReturnScore(){return score;}
 
-    public String ReturnVisited(){return wasVisited;}
+    public boolean ReturnVisited(){return wasVisited;}
 
-    public String ReturnDist(){return dist;}
+    public float ReturnDist(){return dist;}
 
     public String ReturnPath(){return path;}
 }
