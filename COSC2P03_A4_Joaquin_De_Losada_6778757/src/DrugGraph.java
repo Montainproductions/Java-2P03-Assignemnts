@@ -133,10 +133,10 @@ public class DrugGraph {
 
     /*public void BFS(Vertex s){
         s.dist = 0;
-        Q.enqueue(s);
-        while Q is not empty{
-            v = Q.dequeue();
-            v.known = true;
+        queue.enqueue(s);
+        while queue is not empty{
+            Vertex v = Q.dequeue();
+            v.wasVisited = true;
             for each vertex w adjacent to v{
                 if(w.dist > v.dist+1)// we can improve w.dist by going through v to w
                 {
