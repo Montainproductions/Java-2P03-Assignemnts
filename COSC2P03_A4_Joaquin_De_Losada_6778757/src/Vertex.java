@@ -39,6 +39,8 @@ public class Vertex {
 
     public void SetDist(float dist){this.dist = dist;}
 
+    public void SetModule(int moduleGroup){this.moduleGroup = moduleGroup;}
+
     public void SetPath(String path){this.path = path;}
 
     public void DisplayDrug(){
@@ -69,6 +71,8 @@ public class Vertex {
     public boolean ReturnVisited(){return wasVisited;}
 
     public float ReturnDist(){return dist;}
+
+    public int ReturnModule(){return moduleGroup;}
 
     public String ReturnPath(){return path;}
 }

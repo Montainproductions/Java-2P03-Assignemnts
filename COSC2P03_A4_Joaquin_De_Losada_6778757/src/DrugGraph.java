@@ -2,16 +2,19 @@ import java.io.*;
 import java.lang.Math;
 import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class DrugGraph {
     public ArrayList<String> vertexList = new ArrayList<>();
     public ArrayList<String> similaritiesList = new ArrayList<>();
-    public Vertex[] vertices;
+    public Vertex[] vertices, keepModule;
 
-    public float[][] w;
-    public int[][] a;
+    public LinkedList<Vertex> linkedList;
+
+    public float[][] w, w2;
+    public int[][] a, a2;
 
     File writeToInOrderTraverse = new File("recourses//MSTPrimResult.txt");
     public BufferedWriter writeFileInOrder;
@@ -61,6 +64,7 @@ public class DrugGraph {
                 newVertex.SetDrugGroup(currentPatient[4]); //Set the drugs group
                 newVertex.SetScore(currentPatient[5]); //Set the drugs score
                 newVertex.SetVisitied(false);
+                newVertex.SetModule(-1);
                 vertices[vertexList.indexOf(i)] = newVertex; //Add the drug to the array of drugs
 
                 for(int j = 0; j < currentPatient.length; j++){
@@ -100,14 +104,14 @@ public class DrugGraph {
     public void FindModules(){
         int moduleGroup = 0; //How do I know when to increase
         for(int x = 0; x < a.length; x++){
-            for(int y = 0; y < a.length; y++){
+            if(vertices[x].wasVisited){
+                break;
+            }else{
 
-                if(a[x][y] == 1){
-
-                    BFS(DrugIDToInt(vertices[y].ReturnDrugBankID()));
-                    //BFS(vertices[y], moduleGroup);
-                }
             }
+            /*for(int y = 0; y < a.length; y++){
+                if(a[x][y] == 1);
+            }*/
         }
     }
 
@@ -115,10 +119,11 @@ public class DrugGraph {
 
     }
 
-    /*public void BFS(Vertex s, int moduleGroup){
+    public void BFS(Vertex s, int moduleGroup){
+        LinkedList<Vertex> bfsLL = new LinkedList<>();
         s.dist = 0;
-        queue.enqueue(s);
-        while queue is not empty{
+        bfsLL.add(s);
+        /*while(!bfsLL.isEmpty()){
             Vertex v = Q.dequeue();
             v.wasVisited = true;
             for each vertex w adjacent to v{
@@ -129,8 +134,76 @@ public class DrugGraph {
                     Q.enqueue(w);
                 }
             }
+        }*/
+    }
+
+    public void KeepAModule(int moduleID){
+        int size = 0;
+        for(Vertex vertex : vertices) {
+            if (vertex.ReturnModule() == moduleID) {
+                linkedList.add(vertex);
+                size++;
+            }
         }
-    }*/
+        w2 = new float[size][size]; //Create the array of ADT of drug of the size of patients
+        a2 = new int[size][size];
+    }
+
+    public void FindShortestPath(Vertex fromVertex, Vertex toVertex, String method){
+        if(Objects.equals(method, "unweighted")){
+            unweightedShortestPath(fromVertex, toVertex);
+        } else if (Objects.equals(method, "weighted")) {
+            WeightedShortestPath(fromVertex,toVertex);
+        }
+    }
+
+    public void unweightedShortestPath(Vertex start, Vertex finish) {
+        for(int i = 0; i < keepModule.length; i++){
+            keepModule[i].dist = (float)(1.0/0.0);
+            keepModule[i].wasVisited = false;
+        }
+        finish.dist = 0;
+
+        /*for (int currDist = 0; currDist < NUM_VERTICES; currDist++) {
+            for (int i = 0; i < vertices.length; i++) {
+                if (!vertices[i].wasVisited && vertices[i].dist == currDist) {
+                    vertices[i].wasVisited = true;
+                    for each Vertex w adjacent to v {
+                        if (w.dist == INFINITY) {
+                            w.dist = currDist + 1;
+                            w.path = v;
+                        }
+                    }
+                }
+            }
+        }*/
+    }
+
+    public void WeightedShortestPath(Vertex start, Vertex finish){
+
+        for(int i = 0; i < keepModule.length; i++){
+            keepModule[i].dist = (float)(1.0/0.0);
+            keepModule[i].wasVisited = false;
+        }
+        finish.dist = 0;
+
+        /*while( there is an unknown distance vertex )
+        {
+            Vertex v = smallest unknown distance vertex;
+            v.known = true;
+            for each Vertex w adjacent to v
+            if( !w.known )
+            {
+                DistType cvw = cost of edge from v to w;
+                if( v.dist + cvw < w.dist )
+                {
+// Update w
+                    decrease( w.dist to v.dist + cvw );
+                    w.path = v;
+                }
+            }
+        }*/
+    }
 
     //Turn a string into an int ID
     public int DrugIDToInt(String drugID){
