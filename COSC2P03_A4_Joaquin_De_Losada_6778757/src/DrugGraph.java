@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class DrugGraph {
     public ArrayList<String> vertexList = new ArrayList<>();
-    public ArrayList<String> similaritiesList = new ArrayList<>();
+    public ArrayList<Vertex> sameModuleList = new ArrayList<>();
     public Vertex[] vertices, keepModule;
 
     public Queue<Vertex> q = new LinkedList<>();
@@ -18,6 +18,9 @@ public class DrugGraph {
 
     public float[][] w, w2;
     public int[][] a, a2;
+
+    public int toTheLeft;
+    public int upTheMatrix;
 
     File writeToInOrderTraverse = new File("recourses//MSTPrimResult.txt");
     public BufferedWriter writeFileInOrder;
@@ -142,16 +145,36 @@ public class DrugGraph {
         }
     }
 
+
     public void KeepAModule(int moduleID){
         int size = 0;
-        for(Vertex vertex : vertices) {
-            if (vertex.ReturnModule() == moduleID) {
-                linkedList.add(vertex);
+        for(Vertex vertex : vertices){
+            if(vertex.ReturnModule() == moduleID){
+                sameModuleList.add(vertex);
                 size++;
             }
         }
         w2 = new float[size][size]; //Create the array of ADT of drug of the size of patients
         a2 = new int[size][size];
+
+        toTheLeft = 0;
+        upTheMatrix = 0;
+        //sameModuleList.forEach((i) ->{ //Only uncomment and run if you dont want to use your computer. lol
+            for(int x = 0; x < w.length; x++){
+                if(vertices[x].ReturnModule() != moduleID){
+                    upTheMatrix++;
+                    break;
+                }
+                for(int y = 0; y < w.length; y++){
+                    if(vertices[y].ReturnModule() != moduleID){
+                        toTheLeft++;
+                        break;
+                    }
+                    w2[x - upTheMatrix][y - toTheLeft] = w[x][y];
+                    a2[x - upTheMatrix][y - toTheLeft] = a[x][y];
+                }
+            }
+        //});
     }
 
     public void FindShortestPath(Vertex fromVertex, Vertex toVertex, String method){
