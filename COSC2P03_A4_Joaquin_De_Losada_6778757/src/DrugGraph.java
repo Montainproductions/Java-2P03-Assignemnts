@@ -3,6 +3,7 @@ import java.lang.Math;
 import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -10,6 +11,8 @@ public class DrugGraph {
     public ArrayList<String> vertexList = new ArrayList<>();
     public ArrayList<String> similaritiesList = new ArrayList<>();
     public Vertex[] vertices, keepModule;
+
+    public Queue<Vertex> q = new LinkedList<>();
 
     public LinkedList<Vertex> linkedList;
 
@@ -119,22 +122,24 @@ public class DrugGraph {
 
     }
 
-    public void BFS(Vertex s, int moduleGroup){
+    public void BFS(Vertex s, int moduleGroup, int rowVertex){
         LinkedList<Vertex> bfsLL = new LinkedList<>();
+        for(Vertex vertex : vertices){
+            vertex.SetDist((float)(1.0/0.0));
+        }
         s.dist = 0;
         bfsLL.add(s);
-        /*while(!bfsLL.isEmpty()){
-            Vertex v = Q.dequeue();
+        while(!bfsLL.isEmpty()){
+            Vertex v = bfsLL.remove();
             v.wasVisited = true;
-            for each vertex w adjacent to v{
-                if(w.dist > v.dist+1)// we can improve w.dist by going through v to w
-                {
-                    w.dist = v.dist + 1;
-                    w.path = v;
-                    Q.enqueue(w);
+            for(int y = 0; y < w.length; y++){
+                if(vertices[y].dist == (float)(1.0/0.0)){// we can improve w.dist by going through v to w{
+                    vertices[y].dist = v.dist + 1;
+                    //vertices[y].path = v;
+                    bfsLL.add(vertices[y]);
                 }
             }
-        }*/
+        }
     }
 
     public void KeepAModule(int moduleID){
