@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 public class DrugGraph {
     public ArrayList<String> vertexList = new ArrayList<>();
+    public ArrayList<String> simmatList = new ArrayList<>();
     public ArrayList<Vertex> sameModuleList = new ArrayList<>();
     public Vertex[] vertices, keepModule;
 
@@ -27,27 +28,29 @@ public class DrugGraph {
 
     public void ReadData() {
         LoadMainData();
-        System.out.println("Loaded Drugs/Vectors");
-        System.out.println("Loaded SIMMAT file and created box Weighted and Unweighted matrix");
 
         //Runs the method for creating a method and allowing java to later write to said method
         CreateFile();
     }
 
     public void LoadMainData(){
-        File txtFile = new File("recourses//dockedApproved.tab"); //Gets the file
-        BufferedReader readFile;
+        File mainTxtFile = new File("recourses//dockedApproved.tab"); //Gets the file
+        File simmatTxtFile = new File("recourses//sim_mat.tab"); //Gets the file
+
+        BufferedReader mainReadFile, sim_mat;
 
         int totalArrayLength = 0;
 
         try{ //Try this code
-            readFile = new BufferedReader(new FileReader(txtFile)); //Read file
+            mainReadFile = new BufferedReader(new FileReader(mainTxtFile)); //Read file
+            sim_mat = new BufferedReader(new FileReader(simmatTxtFile)); //Read sim mat file
 
             String line = ""; //String that will contain each line
+            String lineSimMat = "";
             //ArrayList<String> drugList = new ArrayList<>();
             //System.out.println(readFile);
-            while (line != null) { //Loop through the txt file
-                line = readFile.readLine(); //Read the line
+            while(line != null){
+                line = mainReadFile.readLine(); //Read the line
                 if (line == null) {
                     break;
                 } //If the current line is null it will stop reading
@@ -57,10 +60,20 @@ public class DrugGraph {
                     vertexList.add(line);
                 }
             }
+
+            while (lineSimMat != null) { //Loop through the txt file
+                lineSimMat = sim_mat.readLine(); //Read the line
+                if (lineSimMat == null) {
+                    break;
+                }
+                simmatList.add(lineSimMat);
+            }
+
             w = new float[totalArrayLength][totalArrayLength]; //Create the array of ADT of drug of the size of patients
             a = new int[totalArrayLength][totalArrayLength];
             vertices = new Vertex[totalArrayLength]; //Create the array of ADT of drug of the size of patients
-            vertexList.forEach((i) ->{ //Go through each arraylist of drug string to split the string up and add it to a drug data type
+            //System.out.println(vertexList.get(0));
+            for(String i : vertexList){ //Go through each arraylist of drug string to split the string up and add it to a drug data type
                 String[] currentPatient = i.split("\\t"); //Spliting the drug into an array
                 Vertex newVertex = new Vertex(); //Create a drug data type
                 newVertex.SetGenericName(currentPatient[0]); //Set the drug name
@@ -72,27 +85,30 @@ public class DrugGraph {
                 newVertex.SetVisitied(false);
                 newVertex.SetModule(-1);
                 vertices[vertexList.indexOf(i)] = newVertex; //Add the drug to the array of drugs
+            }
+            System.out.println("Loaded Drugs/Vectors.");
 
-                for(int j = 0; j < currentPatient.length; j++){
-                    int x = vertexList.indexOf(i);
-                    //System.out.println(currentPatient[x]);
-
-                    float currentVal = Float.parseFloat(currentPatient[j]);
+            for(String x : simmatList){
+                String[] currentPatient = x.split("\\t"); //Spliting the drug into an array
+                for(int y = 0; y < currentPatient.length; y++){
+                    float currentVal = Float.parseFloat(currentPatient[y]);
                     float WeightedValv = (1 - currentVal);
 
                     if(WeightedValv <= 0.7){
                         //System.out.println("Connected Graph");
-                        w[x][j] = WeightedValv;
+                        w[simmatList.indexOf(x)][y] = WeightedValv;
                     }else{
-                        w[x][j] = (float)(1.0/0.0);
+                        w[simmatList.indexOf(x)][y] = (float)(1.0/0.0);
                     }
                 }
-            });
+            }
+            System.out.println("Loaded SimMat and created weighted matrix.");
         } catch (IOException e) { //If the file isnt found then print this
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         }
 
         UnWeightedMatrix();
+        System.out.println("Unweighted matrix made.");
     }
 
     public void UnWeightedMatrix(){
@@ -110,15 +126,21 @@ public class DrugGraph {
     public void FindModules(){
         int moduleGroup = 0; //How do I know when to increase
         for(int x = 0; x < a.length; x++){
-            if(vertices[x].wasVisited){
-                break;
+            //System.out.println(vertices[x].moduleGroup);
+            if(vertices[x].moduleGroup != -1){
+                //moduleGroup++;
+                //break;
             }else{
-
+                //moduleGroup++;
+                BFS(vertices[x], moduleGroup, x);
             }
+            System.out.println(moduleGroup);
             /*for(int y = 0; y < a.length; y++){
                 if(a[x][y] == 1);
             }*/
         }
+        //System.out.println(moduleGroup);
+        System.out.println("All modules found.");
     }
 
     public void BFS(int i){
@@ -138,6 +160,7 @@ public class DrugGraph {
             for(int y = 0; y < w.length; y++){
                 if(vertices[y].dist == (float)(1.0/0.0)){// we can improve w.dist by going through v to w{
                     vertices[y].dist = v.dist + 1;
+                    vertices[y].moduleGroup = moduleGroup;
                     //vertices[y].path = v;
                     bfsLL.add(vertices[y]);
                 }
@@ -145,6 +168,26 @@ public class DrugGraph {
         }
     }
 
+    public void BFSSingleModule(Vertex s, int moduleGroup, int rowVertex){
+        LinkedList<Vertex> bfsLL = new LinkedList<>();
+        for(Vertex vertex : sameModuleList){
+            vertex.SetDist((float)(1.0/0.0));
+        }
+        s.dist = 0;
+        bfsLL.add(s);
+        while(!bfsLL.isEmpty()){
+            Vertex v = bfsLL.remove();
+            v.wasVisited = true;
+            for(int y = 0; y < w2.length; y++){
+                if(sameModuleList.get(y).dist == (float)(1.0/0.0)){// we can improve w.dist by going through v to w{
+                    sameModuleList.get(y).dist = v.dist + 1;
+                    sameModuleList.get(y).moduleGroup = moduleGroup;
+                    //vertices[y].path = v;
+                    bfsLL.add(sameModuleList.get(y));
+                }
+            }
+        }
+    }
 
     public void KeepAModule(int moduleID){
         int size = 0;
@@ -159,22 +202,22 @@ public class DrugGraph {
 
         toTheLeft = 0;
         upTheMatrix = 0;
-        //sameModuleList.forEach((i) ->{ //Only uncomment and run if you dont want to use your computer. lol
-            for(int x = 0; x < w.length; x++){
-                if(vertices[x].ReturnModule() != moduleID){
-                    upTheMatrix++;
+        for(int x = 0; x < w.length; x++){
+            if(vertices[x].ReturnModule() != moduleID){
+                upTheMatrix++;
+                break;
+            }
+            for(int y = 0; y < w.length; y++){
+                if(vertices[y].ReturnModule() != moduleID){
+                    toTheLeft++;
                     break;
                 }
-                for(int y = 0; y < w.length; y++){
-                    if(vertices[y].ReturnModule() != moduleID){
-                        toTheLeft++;
-                        break;
-                    }
-                    w2[x - upTheMatrix][y - toTheLeft] = w[x][y];
-                    a2[x - upTheMatrix][y - toTheLeft] = a[x][y];
-                }
+                w2[x - upTheMatrix][y - toTheLeft] = w[x][y];
+                a2[x - upTheMatrix][y - toTheLeft] = a[x][y];
             }
-        //});
+        }
+
+        System.out.println("Module " + moduleID + " kept.");
     }
 
     public void FindShortestPath(Vertex fromVertex, Vertex toVertex, String method){
@@ -209,14 +252,13 @@ public class DrugGraph {
 
     public void WeightedShortestPath(Vertex start, Vertex finish){
 
-        for(int i = 0; i < keepModule.length; i++){
-            keepModule[i].dist = (float)(1.0/0.0);
-            keepModule[i].wasVisited = false;
+        for(int i = 0; i < sameModuleList.size(); i++){
+            sameModuleList.get(i).dist = (float)(1.0/0.0);
+            sameModuleList.get(i).wasVisited = false;
         }
         finish.dist = 0;
 
-        /*while( there is an unknown distance vertex )
-        {
+        /*while( there is an unknown distance vertex ){
             Vertex v = smallest unknown distance vertex;
             v.known = true;
             for each Vertex w adjacent to v
