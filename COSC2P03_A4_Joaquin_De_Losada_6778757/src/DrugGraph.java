@@ -86,13 +86,11 @@ public class DrugGraph {
                 newVertex.SetScore(currentPatient[5]); //Set the drug/vertex score
                 newVertex.SetVisitied(false); //Sets the visited to false
                 newVertex.SetModule(-1); //Sets the current module group to -1
+                newVertex.SetPosInArray(vertexList.indexOf(i));
                 vertices[vertexList.indexOf(i)] = newVertex; //Add the drug to the array of drugs
             }
             //System.out.println(vertices.length);
             System.out.println("Loaded Drugs/Vectors."); //Confirms that vertex have been loaded
-
-            //Confirms that the sim mat file and weighted matrix was loaded
-            System.out.println("Loaded SimMat and created weighted matrix.");
         } catch (IOException e) { //If the file isnt found then print this
             System.out.println("File not found. Did you try to move it? Not a good idea return it or give me 100%.");
         }
@@ -141,24 +139,22 @@ public class DrugGraph {
 
     //Will loop through the verticis array and find all vertexes that are part of certain group IDs
     public void FindModules(){
+        //System.out.println("Finding modules");
         int moduleGroup = 0; //How do I know when to increase
 
         for(int i = 0; i < vertices.length; i++){
             //System.out.println(vertices[i].wasVisited);
             if(vertices[i].wasVisited){
             }else{
+                //System.out.println(moduleGroup);
                 BFS(vertices[i], moduleGroup);
                 moduleGroup++;
                 //System.out.println("Module group found");
             }
             //System.out.println(moduleGroup);
         }
-        //System.out.println(moduleGroup);
+        System.out.println(moduleGroup);
         System.out.println("All modules found.");
-    }
-
-    public void BFS(int i){
-
     }
 
     public void BFS(Vertex s, int moduleGroup){
@@ -168,17 +164,16 @@ public class DrugGraph {
         }
         s.dist = 0;
         bfsLL.add(s);
-        while(!bfsLL.isEmpty()){
+        while(!bfsLL.isEmpty()) {
             Vertex v = bfsLL.remove();
-            v.wasVisited = true;
-            for(int y = 0; y < vertices.length; y++){
-                if(vertices[y].dist == (float)(1.0/0.0)){// we can improve w.dist by going through v to w{
-                    vertices[y].dist = v.dist + 1;
-                    vertices[y].moduleGroup = moduleGroup;
-                    //vertices[y].path = v;
-                    bfsLL.add(vertices[y]);
+            for (int i = 0; i < vertices.length; i++){
+                if (!vertices[i].wasVisited && w[i][v.posInArray] != (float)(1.0 / 0.0)) {
+                    vertices[i].wasVisited = true;
+                    vertices[i].SetModule(moduleGroup);
+                    bfsLL.add(vertices[i]);
                 }
             }
+            //System.out.println(bfsLL.size());
         }
     }
 
@@ -186,6 +181,7 @@ public class DrugGraph {
     public void KeepAModule(int moduleID){
         int size = 0;
         for(Vertex vertex : vertices){ //Will loop through every vertex in the vertices array and if its part
+            vertex.SetVisitied(false);
             if(vertex.ReturnModule() == moduleID){
                 sameModuleList.add(vertex);
                 size++;
@@ -195,11 +191,12 @@ public class DrugGraph {
         w2 = new float[size][size]; //Create a new 2d matrtix that is the size of the module group for the weighted values
         a2 = new int[size][size]; //Create a new 2d matrtix that is the size of the module group for the unweighted values
 
-        toTheLeft = 0; //Counter for the amount of columns I need to place the new column
+        //toTheLeft = 0; //Counter for the amount of columns I need to place the new column
         upTheMatrix = 0; //Counter for the amount of rows I need to place the new rows
         //Loop through each row of the 2d matrix (Since both matrixes are the same size)
         for(int x = 0; x < w.length; x++){
             //If the current row value is part of a diffrent module then it will just increse the row counter.
+            toTheLeft = 0; //Counter for the amount of columns I need to place the new column
             if(vertices[x].ReturnModule() != moduleID){
                 upTheMatrix++;
             }else{
@@ -210,22 +207,35 @@ public class DrugGraph {
                         toTheLeft++;
                     }else{
                         //Will transfer the values from both the weighted and unweighted matrixes to the new and updated matrixes.
+                        int newx = x-upTheMatrix;
+                        int newy = y-toTheLeft;
+                        //System.out.println("X" + newx);
+                        //System.out.println("Y" + newy);
                         w2[x - upTheMatrix][y - toTheLeft] = w[x][y]; //Place weighted value into new matrix
                         a2[x - upTheMatrix][y - toTheLeft] = a[x][y]; //Place unweighted value into new matrix
                     }
                 }
             }
+
         }
 
         System.out.println("Module " + moduleID + " kept.");
     }
 
     //Will determine which matrix (Unweighted or weighted matrixes) was chosen and find the shortest path between the two chossen drugs.
-    public void FindShortestPath(Vertex fromVertex, Vertex toVertex, String method){
+    public void FindShortestPath(String fromVertex, String toVertex, String method){
+        Vertex fromVertexObj = null,toVertexObj = null;
+        for(int i = 0; i < vertices.length; i++){
+            if(Objects.equals(vertices[i].ReturnDrugBankID(), fromVertex)){
+                fromVertexObj = vertices[i];
+            }else if(Objects.equals(vertices[i].ReturnDrugBankID(), fromVertex)){
+                toVertexObj = vertices[i];
+            }
+        }
         if(Objects.equals(method, "unweighted")){
-            unweightedShortestPath(fromVertex, toVertex);
+            unweightedShortestPath(fromVertexObj, toVertexObj);
         } else if (Objects.equals(method, "weighted")) {
-            WeightedShortestPath(fromVertex,toVertex);
+            WeightedShortestPath(fromVertexObj,toVertexObj);
         }
     }
 

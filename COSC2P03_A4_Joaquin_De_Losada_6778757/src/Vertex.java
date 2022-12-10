@@ -1,7 +1,7 @@
 public class Vertex {
     public String genericName, sMILES, drugBankID, url, drugGroups, score, path;
 
-    public int moduleGroup;
+    public int moduleGroup, posInArray;
 
     public float dist;
 
@@ -40,6 +40,8 @@ public class Vertex {
     public void SetDist(float dist){this.dist = dist;}
 
     public void SetModule(int moduleGroup){this.moduleGroup = moduleGroup;}
+
+    public void SetPosInArray(int posInArray){this.posInArray = posInArray;}
 
     public void SetPath(String path){this.path = path;}
 
