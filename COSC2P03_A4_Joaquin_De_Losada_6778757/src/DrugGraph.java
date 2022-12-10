@@ -104,6 +104,7 @@ public class DrugGraph {
         System.out.println("Unweighted matrix made.");
     }
 
+    //Create a weighted matrix
     public void WeightedMatrix(){
         for(String x : simmatList){
             //String tokanizer
@@ -124,6 +125,7 @@ public class DrugGraph {
         }
     }
 
+    //Create an unweighted matrix
     public void UnWeightedMatrix(){
         //Loops through the weighted graph
         for(int x = 0; x < w.length; x++){
@@ -144,8 +146,7 @@ public class DrugGraph {
 
         for(int i = 0; i < vertices.length; i++){
             //System.out.println(vertices[i].wasVisited);
-            if(vertices[i].wasVisited){
-            }else{
+            if(!vertices[i].wasVisited){ //If the vertex hasent been visited then run BFS
                 //System.out.println(moduleGroup);
                 BFS(vertices[i], moduleGroup);
                 moduleGroup++;
@@ -163,14 +164,17 @@ public class DrugGraph {
             vertex.SetDist((float)(1.0/0.0));
         }
         s.dist = 0;
-        bfsLL.add(s);
+        bfsLL.add(s); //Add initial vertex to linked list
+
+        //While the linked list is not empty it will see if it is related to any other vertex
         while(!bfsLL.isEmpty()) {
-            Vertex v = bfsLL.remove();
+            Vertex v = bfsLL.remove(); //Remove vertex from linked list
             for (int i = 0; i < vertices.length; i++){
+                //If the current vertex hasnt been visited and its related to the current i drug then it will set the module group for the drug
                 if (!vertices[i].wasVisited && w[i][v.posInArray] != (float)(1.0 / 0.0)) {
                     vertices[i].wasVisited = true;
                     vertices[i].SetModule(moduleGroup);
-                    bfsLL.add(vertices[i]);
+                    bfsLL.add(vertices[i]); //Add new vertex to linked list
                 }
             }
             //System.out.println(bfsLL.size());
@@ -191,7 +195,6 @@ public class DrugGraph {
         w2 = new float[size][size]; //Create a new 2d matrtix that is the size of the module group for the weighted values
         a2 = new int[size][size]; //Create a new 2d matrtix that is the size of the module group for the unweighted values
 
-        //toTheLeft = 0; //Counter for the amount of columns I need to place the new column
         upTheMatrix = 0; //Counter for the amount of rows I need to place the new rows
         //Loop through each row of the 2d matrix (Since both matrixes are the same size)
         for(int x = 0; x < w.length; x++){
@@ -207,10 +210,6 @@ public class DrugGraph {
                         toTheLeft++;
                     }else{
                         //Will transfer the values from both the weighted and unweighted matrixes to the new and updated matrixes.
-                        int newx = x-upTheMatrix;
-                        int newy = y-toTheLeft;
-                        //System.out.println("X" + newx);
-                        //System.out.println("Y" + newy);
                         w2[x - upTheMatrix][y - toTheLeft] = w[x][y]; //Place weighted value into new matrix
                         a2[x - upTheMatrix][y - toTheLeft] = a[x][y]; //Place unweighted value into new matrix
                     }
@@ -226,16 +225,21 @@ public class DrugGraph {
     public void FindShortestPath(String fromVertex, String toVertex, String method){
         Vertex fromVertexObj = null,toVertexObj = null;
         for(int i = 0; i < vertices.length; i++){
+            //Will turn the string that the method recives into the vertex data type
             if(Objects.equals(vertices[i].ReturnDrugBankID(), fromVertex)){
                 fromVertexObj = vertices[i];
-            }else if(Objects.equals(vertices[i].ReturnDrugBankID(), fromVertex)){
+            }
+            if(Objects.equals(vertices[i].ReturnDrugBankID(), toVertex)){
                 toVertexObj = vertices[i];
             }
         }
+
+        /* Couldnt get the methods working in time so it will only be partial marks */
+        //Will run the correct method for either unweighted or weighted matrixes
         if(Objects.equals(method, "unweighted")){
-            unweightedShortestPath(fromVertexObj, toVertexObj);
+            //unweightedShortestPath(fromVertexObj, toVertexObj);
         } else if (Objects.equals(method, "weighted")) {
-            WeightedShortestPath(fromVertexObj,toVertexObj);
+            //WeightedShortestPath(fromVertexObj,toVertexObj);
         }
     }
 
