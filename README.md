@@ -24,7 +24,9 @@ Final grade - 11.25/12 - 93.75%
  
 For this assignment I was required to build a heap data structure to store a set of drug information. After that I was meant to implement a trickle-down system that would go through the heap and update the position of any drug I needed (Usually the first object in the Heap array).
  
-The most difficult part of the assignment was setting up the Heap arrays and knowing if the Heap I was outputting was ordered correctly or I was doing it incorrectly. At the same time the Heap Arrays seem to be a slightly more complicated and convoluted binary tree data structure (With less nodes pointing to nulls compared to the Binary tree).
+The most difficult part of the assignment was setting up the Heap arrays and knowing if the Heap I was outputting was ordered correctly or I was doing it incorrectly. At the same time the Heap Arrays seem to be a slightly more complicated and convoluted binary tree data structure (With less nodes pointing to nulls compared to the Binary tree). After recving my grade the points I lost revolved around not using the the findmin method properly as was expected in the assignments and therfore I lost the 1.25 points from my final grade.
+
+Final grade - 6.75/8 - 84.38%
  
 ## Assignment 4
 
