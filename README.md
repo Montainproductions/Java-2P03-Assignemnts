@@ -31,3 +31,7 @@ Final grade - 6.75/8 - 84.38%
 ## Assignment 4
 
 This final assignment has to do with graphs where I need to go through a list of drugs and 2 different 2d matrixes to find which drugs are connected to other drugs and place them in their own module ID value. After this I am meant to make a new array and pair of matrixes that are part of a specific module group which I am meant to then find the shortest path between two drugs either using a Breadth first search or Dijkstra algorithm depending on if I need to search in the unweighted or weighted matrix.
+
+For the marks I lost it had to do with not having worked and uploaded a satisfactory MSTPrim method, meanwhile the FindShortestPath method for both the weighted and unweighted wasnt complete enough for the TAs to give me points towards my final grade.
+
+Final grade - 8.5/12 - 70.83%
